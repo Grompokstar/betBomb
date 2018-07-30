@@ -36,6 +36,10 @@
       tr {
         border-bottom none!important
 
+        &:nth-of-type(2n) {
+          background #eee
+        }
+
         &.deleted {
           opacity 0.3
         }
@@ -48,12 +52,21 @@
           cursor pointer
 
           &:hover {
-            background $light-gray-bg!important
+            background $blue-brand-color!important
+            color: #fff!important
           }
 
           &.active {
             background $light-gray-bg!important
           }
+        }
+
+        &.minus {
+          background-color rgba(255, 50, 0, 0.3)
+        }
+
+        &.plus {
+          background-color rgba(92, 184, 92, 0.3)
         }
 
         &:first-child {

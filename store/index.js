@@ -1,5 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
+import { filterFunctions } from '../libraries/filter_functions';
 
 const STAGE_URL = '185.193.143.78';
 const TEST_URL = '185.193.143.156';
@@ -131,36 +132,11 @@ export const state = () => ({
 
 export const mutations = {
   setEvents (state, payload) {
-    let filterData = _.filter(payload.data, function(item) {
+    let filterData = payload.data;
 
-      if (item.odds['1_3'] && item.view.stats && item.view.stats.dangerous_attacks) {
-        let totalOdds = item.odds['1_3'];
-        let startTotalOdd = totalOdds[totalOdds.length - 1];
-
-        if (startTotalOdd && item.view.stats) {
-          let handicapArray = startTotalOdd.handicap.split(',');
-
-          let goalsOnTarget = 0;
-          if (item.view.stats.on_target) {
-            goalsOnTarget = parseInt(item.view.stats.on_target[0]) + parseInt(item.view.stats.on_target[1]);
-          }
-
-          let attacksSumm = 0;
-          if (item.view.stats.attacks) {
-            attacksSumm = parseInt(item.view.stats.attacks[0]) + parseInt(item.view.stats.attacks[1]);
-          }
-
-
-          let dangerAttacksSumm = parseInt(item.view.stats.dangerous_attacks[0]) + parseInt(item.view.stats.dangerous_attacks[1]);
-
-          return (parseFloat(startTotalOdd.over_od) <= 1.6 || parseFloat(handicapArray[0]) > 2.5 && startTotalOdd.over_od < 1.9)
-          && goalsOnTarget >= 3 && attacksSumm >= 40 && dangerAttacksSumm/attacksSumm >= 0.5
-        } else {
-          return false
-        }
-      }
-
-    })
+    filterData = _.filter(filterData, filterFunctions.startTB);
+    filterData = _.filter(filterData, filterFunctions.leagueName);
+    filterData = _.filter(filterData, filterFunctions.attacks);
     state.events = filterData;
   },
 

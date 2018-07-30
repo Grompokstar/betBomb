@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout row class="mmt-3">
-      <v-flex xs6 class="dd-flex" align-center justify-start>
+      <v-flex xs9 class="dd-flex" align-center justify-start>
         <div class="display-1 medium mmr-3">События</div>
         <div class="search-icon d-block" v-if="!isShowSearchInput">
           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" @click="showSearchInput">
@@ -17,6 +17,23 @@
                       pt-0
                       class="without-details"
         ></v-text-field>
+        <div class="mml-3 text-xs-center">
+          Всего матчей:<br> <span class="bold">{{ eventsCount }}</span>
+        </div>
+        <div class="mml-2 text-xs-center">
+          Плюсов:<br> <span class="bold green--text">{{ eventsPlusCount }}</span>
+        </div>
+        <div class="mml-2 text-xs-center">
+          Минусов:<br> <span class="bold red--text">{{ eventsMinusCount }}</span>
+        </div>
+
+        <div class="mml-2 text-xs-center">
+          Процент:<br> <span class="bold">{{ (eventsPlusCount/(eventsPlusCount+eventsMinusCount)*100).toFixed(2) }}%</span>
+        </div>
+
+        <div class="mml-2 text-xs-center">
+          Не рассчитано:<br> <span class="bold">{{ eventsCount - (eventsPlusCount+eventsMinusCount) }}</span>
+        </div>
       </v-flex>
     </v-layout>
 
@@ -34,10 +51,14 @@
       >
         <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
         <template slot="items" slot-scope="props">
-          <tr>
+          <tr class="pointer" :class="getResult(props.item)">
+            <td>
+              {{props.item.id}}<br>
+              {{ new Date(parseInt(props.item.time) * 1000).toLocaleString('ru') }}
+            </td>
             <td>
               {{props.item.league.name}}<br>
-              <div class="bold sans-pro">{{props.item.home.name}} <span class="font-lg blue-brand-color">{{props.item.ss}}</span> {{props.item.away.name}}</div>
+              <div class="bold sans-pro">{{props.item.home.name}} <span class="font-lg red-brand-color">{{props.item.ss}}</span> {{props.item.away.name}}</div>
               <b>{{ props.item.timer.tm }}</b> минута
             </td>
             <td>
@@ -60,12 +81,20 @@
               </span>
             </td>
             <td>
+              <template v-if="props.item.odds['1_1']">
               Исход: {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].home_od }} - {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].away_od }}  =>
-              {{ props.item.odds['1_1'][0].home_od }} - {{ props.item.odds['1_1'][0].away_od }}<br>
-              <template v-if="props.item.odds['1_3']">
-                ТБ: {{ props.item.odds['1_3'][props.item.odds['1_3'].length - 1].over_od }}/{{ props.item.odds['1_3'][props.item.odds['1_3'].length - 1].handicap }}<br>
-                TБ 1 тайм: {{ props.item.odds['1_6'][0].over_od }}/{{ props.item.odds['1_6'][0].handicap }}
+              {{ props.item.odds['1_1']['0'].home_od }} - {{ props.item.odds['1_1']['0'].away_od }}<br>
               </template>
+              <template v-if="props.item.odds['1_3'] && props.item.odds['1_6']">
+                ТБ: {{ props.item.odds['1_3'][props.item.odds['1_3'].length - 1].over_od }}/{{ props.item.odds['1_3'][props.item.odds['1_3'].length - 1].handicap }}<br>
+                TБ 1 тайм: {{ tb1stHalf(props.item) }}
+              </template>
+            </td>
+            <td>
+              <div v-if="props.item.resultView && props.item.resultView.scores" class="bold">
+                {{ props.item.resultView.scores['2'].home }} - {{ props.item.resultView.scores['2'].away }}
+                ({{ props.item.resultView.scores['1'].home }} - {{ props.item.resultView.scores['1'].away }})
+              </div>
             </td>
           </tr>
         </template>
@@ -87,20 +116,33 @@
   import { makeErrorObject, calculatePrice } from '../../libraries/helpers'
 
   export default {
-    data () {
+    mounted() {
+      this.$store.dispatch('getEvents').then(response => {
+        this.isLoadingProducts = false;
+        if (response.status === 200) {
+          this.$store.commit('setEvents', response)
+        } else {
+          this.$toast.error(makeErrorObject(response))
+        }
+      });
+    },
+
+    data() {
       return {
         search: '',
         isShowSearchInput: false,
         isLoadingProducts: true,
         headers: [
-          { text: 'Лига, команды', align: 'left', sortable: false,value: 'id'},
-          { text: 'Атаки', align: 'left',  sortable: false, value: 'product_id'},
-          { text: 'Удары', align: 'left', sortable: false, value: '' },
-          { text: 'Карточки', sortable: false, value: 'created_at' },
-          { text: 'Другое', align: 'left', sortable: false, value: 'state'},
-          { text: 'Ставки', sortable: false }
+          {text: 'ID, время', align: 'left', value: 'time'},
+          {text: 'Лига, команды', align: 'left', value: 'league.name'},
+          {text: 'Атаки', align: 'left', sortable: false },
+          {text: 'Удары', align: 'left', sortable: false},
+          {text: 'Карточки', sortable: false },
+          {text: 'Другое', align: 'left', sortable: false},
+          {text: 'Ставки', sortable: false},
+          {text: 'Итоговый счет', sortable: false}
         ],
-        pagination: {'sortBy': 'created_at', 'descending': true, 'rowsPerPage': 25},
+        pagination: {'sortBy': 'time', 'rowsPerPage': 50},
         machineStatuses: {
           RUNNING: this.$t('productStatuses.running'),
           HALTED: this.$t('productStatuses.halted'),
@@ -108,7 +150,7 @@
           processing: this.$t('productStatuses.processing'),
           failed: this.$t('productStatuses.failed'),
         },
-        rowPerPageItems: [5, 10, 25, 50, {"text":this.$t('tablesCommon.pagination.all'),"value":-1}],
+        rowPerPageItems: [5, 10, 25, 50, {"text": this.$t('tablesCommon.pagination.all'), "value": -1}],
         confirmDeleteProductDialog: false,
         deletingProduct: null,
         haveProcessingProducts: false
@@ -119,6 +161,38 @@
     computed: {
       events() {
         return this.$store.state.events
+      },
+      eventsCount() {
+        return this.$store.state.events.length
+      },
+      eventsMinusCount() {
+        let count = 0;
+        _.forEach(this.$store.state.events, function (item) {
+          if (item.scores && item.resultView && item.resultView.scores) {
+            let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
+            let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
+            if (finishGoalsSum <= startGoalsSum) {
+              count++
+            }
+          }
+        })
+
+        return count;
+      },
+
+      eventsPlusCount() {
+        let count = 0;
+        _.forEach(this.$store.state.events, function (item) {
+          if (item.scores && item.resultView && item.resultView.scores) {
+            let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
+            let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
+            if (finishGoalsSum > startGoalsSum) {
+              count++
+            }
+          }
+        })
+
+        return count;
       }
     },
 
@@ -128,30 +202,37 @@
       },
 
       goToProductInstance(product) {
-        let machine = _.find(product.resources, function(resource) {
+        let machine = _.find(product.resources, function (resource) {
           return resource.type === 'machine'
         });
 
         if (product.state === 'active' && machine) {
           this.$store.commit('setProduct', product);
-          this.$router.push({ path: '/products/' + product.id });
+          this.$router.push({path: '/products/' + product.id});
         }
-      }
-    },
+      },
 
-    mounted() {
-      this.$store.dispatch('getEvents').then(response => {
-        this.isLoadingProducts = false;
-        if (response.status === 200) {
-          this.$store.commit('setEvents', response)
+      getResult(item) {
+        if (item.scores && item.resultView && item.resultView.scores) {
+          let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
+          let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
+          if (finishGoalsSum <= startGoalsSum) {
+            return 'minus'
+          } else {
+            return 'plus'
+          }
         } else {
-          this.$toast.error(makeErrorObject(response))
+          return 'default'
         }
-      });
+      },
+
+       tb1stHalf(item) {
+        if (item.odds && item.odds['1_6'] && item.odds['1_6']['0']) {
+          return item.odds['1_6']['0'].over_od + '/' + item.odds['1_6']['0'].handicap
+        }
+
+      }
     }
-
-
-
 
   }
 </script>
