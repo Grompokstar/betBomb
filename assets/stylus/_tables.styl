@@ -1,0 +1,125 @@
+.de-table {
+  .v-table {
+    border 1px solid #f2f3f6
+    font-family 'Source Sans Pro', sans-serif;
+
+    thead {
+      background-color #f2f3f6
+
+      tr {
+        height auto
+      }
+
+      tr:first-child {
+        border-bottom none
+
+        th {
+          font-size 12px
+          padding 8px 20px
+          font-weight 700
+          letter-spacing 1px
+          text-transform uppercase
+
+          &:first-child {
+            padding-left 30px
+          }
+
+          &:last-child {
+            padding-right 30px
+          }
+        }
+
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom none!important
+
+        &.deleted {
+          opacity 0.3
+        }
+
+        &:hover {
+          background none!important
+        }
+
+        &.pointer {
+          cursor pointer
+
+          &:hover {
+            background $light-gray-bg!important
+          }
+
+          &.active {
+            background $light-gray-bg!important
+          }
+        }
+
+        &:first-child {
+          td {
+            padding-top 30px
+          }
+        }
+
+        &:last-child {
+          td {
+            padding-bottom 35px
+          }
+        }
+
+        td {
+          font-size 16px
+          padding 10px 20px
+          vertical-align top
+
+          &:first-child {
+            padding-left 30px
+          }
+
+          &:last-child {
+            padding-right 30px
+          }
+        }
+      }
+
+
+
+    }
+  }
+
+  &.without-border {
+
+    .table {
+      border none
+    }
+
+  }
+
+  &.pointer {
+    .table {
+      tr {
+        cursor pointer
+
+        &.datatable__expand-row {
+          table {
+            tr {
+              cursor default
+            }
+          }
+        }
+
+        &.no-pointer {
+          cursor default
+        }
+      }
+    }
+  }
+}
+
+.search-icon {
+}
+
+.theme--light .v-datatable .v-datatable__actions {
+  border-top none
+}

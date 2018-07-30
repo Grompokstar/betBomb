@@ -1,0 +1,284 @@
+{
+  "header": {
+    "currentLanguage": "En",
+    "links": {
+      "products": "My products",
+      "newProduct": "New product",
+      "support": "Support"
+    },
+    "profile": "Profile",
+    "logout": "Logout",
+    "signIn": "Sign In",
+    "create": "New product"
+  },
+
+  "tablesCommon": {
+    "pagination": {
+      "rowPerPage": "Show rows:",
+      "of": "of",
+      "all": "All"
+    },
+
+    "find": "Nothing found in the search \"{search}\""
+  },
+
+  "productInstancesTable": {
+    "title": "My products",
+    "titleButton": "Add new product",
+    "actions": "Actions",
+    "resize": "Resize",
+    "delete": "Remove",
+    "noData": "No data",
+    "tableTHs": {
+      "name": "Name",
+      "client": "Account",
+      "fee": "Monthly fee*",
+      "creationDate": "Creation date",
+      "status": "Status",
+      "type": "Type"
+    }
+  },
+
+  "productTypes": {
+    "cloudSpace": "Cloud space",
+    "virtualMachine": "Virtual machine"
+  },
+
+  "productStatuses": {
+    "running": "Active",
+    "halted": "Stopped",
+    "active": "Active",
+    "processing": "Processing...",
+    "failed": "Failed"
+  },
+
+  "productPage": {
+    "nav": {
+      "summary": "Summary",
+      "console": "Console",
+      "monitor": "Monitor",
+      "resize": "Resize",
+      "power": "Power",
+      "network": "Network",
+      "storage": "Storage",
+      "snapshot": "Snapshot",
+      "logs": "Logs",
+      "remove": "Remove"
+    },
+    "notifications": {
+      "changeProductName": "The product name is successfully changed.",
+      "stopVM": "The virtual machine was successfully stopped.",
+      "startVM": "The virtual machine has been successfully started.",
+      "restartVM": "The virtual machine was successfully restarted.",
+      "createPort": "Port forwarding has been successfully created.",
+      "editPort": "Port forwarding has been successfully changed.",
+      "deletePort": "Port forwarding has been successfully removed.",
+      "deleteVM": "Request to delete the virtual machine in processing.",
+      "resizeVM": "Request to resize the virtual machine in processing.",
+      "deleteProduct": "Request to delete the product in processing."
+    },
+    "params": "Main parameters",
+    "currentConf": "Current configuration",
+    "resizeTitle": "Resize",
+    "resizeDescription": "Use slider or enter a value and check updated price estimate. Resize will be made upon \"save\"",
+    "makeResizeAttention": "It is impossible to make downsize enabled virtual servers!",
+    "bootDisk": "Boot Disk",
+    "cloudSpace": "Cloud space",
+    "image": "Image",
+    "powerButtons": {
+      "stop": "Stop",
+      "start": "Start",
+      "restart": "Restart"
+    },
+    "removeTitle": "Remove a virtual machine",
+    "removeDescription": "Click the \"Remove\" button to delete the virtual machine. This action is irreversible.",
+    "removeButton": "Remove",
+    "network": {
+      "title": "Network",
+      "pageDescription": "Information about ports, network and channel width.",
+      "portForwardTable": {
+        "title": "Port forwarding",
+        "addPortBtn": "Add port",
+        "actionEdit": "Edit",
+        "THs": {
+          "port": "Port",
+          "vm": "Virtual machine",
+          "protocol": "Protocol"
+        }
+      },
+      "createForm": {
+        "title": "Port forwarding",
+        "source": "Source",
+        "destination": "Destination",
+        "port": "Port",
+        "protocol": "Protocol"
+      }
+    }
+
+  },
+
+  "button": {
+    "save": "Save",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "signIn": "Sign In",
+    "order": "Order",
+    "deposit": "Deposit",
+    "send": "Send"
+  },
+
+  "dialogs": {
+    "confirmation": "Confirmation",
+    "confirmRequest": "Are you sure? This action is irreversible.",
+    "vmRemoving": " You are deleting vitrual server",
+    "vmRemovingDescription": "All data and configuration will be lost! This action is irreversible once started. "
+  },
+
+  "profilePage": {
+    "title": "Profile",
+    "nav": {
+      "settings": "Settings",
+      "bonuses": "Bonuses",
+      "notifications": "Notifications",
+      "accounts": "Accounts",
+      "balance": "Balance",
+      "support": "Support"
+    },
+    "edit": "Edit",
+    "editProfileForm": {
+      "title": "Edit profile",
+      "account": "Account",
+      "phone": "Phone",
+      "name": "First name",
+      "surname": "Second name"
+    },
+    "balanceTitle": "Balance",
+    "balanceLabel": "balance",
+    "transactionHistory": "Transaction history",
+    "th": {
+      "date": "Date",
+      "amount": "Amount",
+      "period": "Period",
+      "product": "Product"
+    },
+    "statementFor": "Statement for",
+    "detailedStatement": "Detailed statement",
+    "count": "Count",
+    "price": "Price",
+    "depositPayU": "Deposit via PayU service",
+    "amount": "Amount",
+    "balanceReplenishment": "Balance replenishment"
+  },
+
+  "validation": {
+    "require": "This field is required",
+    "email": "Enter valid Email",
+    "phone": "Enter valid phone",
+    "min3": "Minimum length 3 characters",
+    "min6": "Minimum length 6 characters",
+    "minValue100": "The minimum Deposit is 100 rubles",
+    "name": "Small and capital letters are allowed",
+    "vmName": "Small and capital letters, numbers, underscores, hyphens, periods, colons are allowed"
+  },
+
+  "authorizePage": {
+    "signIn": "Sign In",
+    "account": "User account",
+    "password": "Password",
+    "notAccount": "Do not have an account?",
+    "registration": "Sign up"
+  },
+
+  "registrationPage": {
+    "signUp": "Sign Up",
+    "account": "User account data",
+    "phone": "Phone",
+    "password": "Password",
+    "twoStepVerification": "Enable two-step verification",
+    "code": "Verification code",
+    "name": "Name",
+    "secondName": "Last name",
+    "agree": "I agree to the Terms of use and Privacy policy"
+  },
+
+  "createProduct": "Create product",
+  "cloudSpace": "Cloud space",
+  "anyConfig": "Any configuration for your purposes",
+  "from": "",
+  "month": "month",
+
+  "configurator": {
+    "tabs": {
+      "signUp": "Sign up",
+      "configuration": "Configuration",
+      "options": "Options"
+    },
+    "title": "Product creation",
+    "totalPrice": "Total price",
+    "form": {
+      "location": "Location",
+      "cloudSpace": "Cloud space",
+      "cloudSpaceName": "Cloud space name",
+      "vmName": "VM name",
+      "vmDescription": "VM description",
+      "image": "Image",
+      "bootDiskSize": "Boot disk size",
+      "nextStep": "Next",
+      "bandwidth": "Bandwidth",
+      "vdcName": "Cloud space name",
+      "vdcDescription": "Cloud space description"
+    }
+  },
+
+  "tickets": {
+    "notifications": {
+      "createTicket": "The ticket was successfully created.",
+      "createNote": "The message was successfully sent."
+    },
+
+    "statuses": {
+      "1": "New",
+      "2": "Open",
+      "3": "Pending reminder",
+      "4": "Closed",
+      "5": "Merged",
+      "6": "Removed",
+      "7": "Pending close"
+    },
+
+    "myTickets": "My tickets",
+    "newTicketBtn": "Create new",
+    "newTicket": "New ticket",
+    "subject": "Subject",
+    "problem": "Problem description",
+    "send": "Send",
+
+    "THs": {
+      "title": "subject",
+      "created": "Created",
+      "status": "Status"
+    },
+
+    "articlesPage": {
+      "top": "At top",
+      "bottom": "At bottom",
+      "ticketsList": "Tickets list",
+      "newMessage": "New message",
+      "newMessages": "New messages",
+      "message": "Message"
+    }
+  },
+
+  "supportPage": {
+    "howCanAssist": "How can we assist you?",
+    "knowledgeBase": "Knowledge base",
+    "myTickets": "My tickets",
+    "knowledgeDescription": "Manuals, how-tos, workarounds, and many more.",
+    "ticketsDescription": "Contact our support team and manage your tickets",
+    "read": "Read",
+    "view": "View",
+    "trends": "In the trend",
+    "announcements": "Announcements"
+  }
+}

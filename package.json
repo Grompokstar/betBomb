@@ -1,0 +1,41 @@
+{
+  "name": "de_portal_frontend",
+  "version": "1.0.0",
+  "description": "DE Portal 2.0",
+  "author": "Roman Chervontsev <roma.chervontsev@gmail.com>",
+  "private": true,
+  "config": {
+    "nuxt": {
+      "port": "3366"
+    }
+  },
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "deploy_stage": "export $(cat ./config/deploy/.stage | xargs) && ./bin/deploy.sh",
+    "full_deploy_stage": "export $(cat ./config/deploy/.stage | xargs) && ./bin/full_deploy.sh",
+    "deploy_test": "export $(cat ./config/deploy/.test | xargs) && ./bin/deploy.sh",
+    "full_deploy_test": "export $(cat ./config/deploy/.test | xargs) && ./bin/full_deploy.sh"
+  },
+  "dependencies": {
+    "@novnc/novnc": "https://github.com/Grompokstar/noVNC.git",
+    "@nuxtjs/sentry": "^1.0.3",
+    "axios": "^0.18.0",
+    "bootstrap": "^4.1.0",
+    "cookie-universal-nuxt": "^2.0.3",
+    "cxlt-vue2-toastr": "^1.1.0",
+    "is-browser": "^2.0.1",
+    "jquery": "^3.3.1",
+    "lodash": "^4.17.10",
+    "nuxt": "^1.0.0",
+    "popper.js": "^1.14.3",
+    "vue-i18n": "^8.0.0",
+    "vuetify": "^1.0.0"
+  },
+  "devDependencies": {
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1"
+  }
+}

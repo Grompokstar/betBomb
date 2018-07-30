@@ -1,0 +1,61 @@
+.slider-form-group {
+  .v-input--slider {
+    height 30px
+    position: relative;
+    top: -16px;
+    padding-right 2px
+
+    .v-messages {
+      display none
+    }
+
+    .v-slider {
+      .v-slider__thumb {
+        background: #fff !important;
+        border: 4px solid $blue-brand-color!important;
+        width: 18px;
+        height: 18px;
+        transform translateY(-50%) scale(0.8)
+        position relative
+        left -8px
+      }
+
+      &.v-slider--is-active {
+        .v-slider__thumb {
+          transform translateY(-50%) scale(1)
+        }
+      }
+    }
+
+
+
+    .v-slider__track__container {
+      height: 4px;
+    }
+
+    .v-slider__track {
+      background: transparent!important;
+      height: 4px;
+      left 0!important
+    }
+
+    .v-slider__track-fill {
+      background: $blue-brand-color!important;
+      height: 3px;
+    }
+  }
+
+  .v-text-field {
+    .v-text-field__slot {
+      input {
+        &:disabled {
+          color $font-color
+        }
+      }
+    }
+    .v-text-field__details {
+      display none
+    }
+  }
+}
+

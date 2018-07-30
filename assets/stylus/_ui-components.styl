@@ -1,0 +1,91 @@
+.menu-activator {
+  margin-right 18px
+
+  &::after {
+    top: 8px;
+    right: 0;
+    position: absolute;
+    display: inline-block;
+    width: 10px;
+    height: 7px;
+    content: "";
+    background: url("~assets/images/select-icon.svg") no-repeat;
+    background-size: contain;
+  }
+}
+
+button {
+  &.white-btn {
+    background #fff
+    padding 6px 15px
+    font-weight 500
+    color $blue-brand-color
+
+    &:hover {
+      background rgba(255, 255, 255, 0.9)
+    }
+  }
+}
+
+  // стили для уведомлений
+
+.cxlt-toastr-container>div {
+  background-color #fff
+  color $font-color
+  padding 10px 15px 15px 30px
+  border-radius 0
+  box-shadow: 0 0 12px rgba(153, 153, 153, 0.7);
+
+  &:before {
+    position absolute
+    top 0
+    left 0
+    content ''
+    width 10px
+    height 100%
+    background-color $blue-brand-color
+  }
+
+  &.toast-success {
+    &:before {
+      background-color $success-brand-color
+    }
+  }
+
+  &.toast-error {
+    &:before {
+      background-color $red-brand-color
+    }
+  }
+
+  &:hover {
+    box-shadow: 0 0 12px rgba(153, 153, 153, 1);
+  }
+
+  .toast-icon {
+    display none
+  }
+
+  .toast-close-button {
+    color $font-color
+    font-size 20px
+    line-height 16px
+
+    &:hover {
+      opacity 0.8
+    }
+  }
+
+  .toast-title {
+    margin-bottom 5px
+  }
+
+  .toast-message {
+    font-family 'Source Sans Pro', sans-serif
+  }
+}
+
+.v-menu {
+  vertical-align baseline
+}
+

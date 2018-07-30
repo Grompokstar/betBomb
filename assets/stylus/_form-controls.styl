@@ -1,0 +1,247 @@
+.v-input {
+  padding 0
+
+  &.v-text-field {
+    .v-input__control {
+
+      .v-input__slot {
+        margin-bottom 0
+        border solid 2px $form-border-color;
+        font-size 18px
+        font-weight 500
+        padding 8px 12px
+
+        &::before {
+          display none!important
+        }
+
+        &::after {
+          display none!important
+        }
+
+        input {
+          font-size 18px
+          height 26px
+          line-height 24px
+        }
+
+        label {
+          font-weight 400
+        }
+      }
+    }
+
+    .v-text-field__details {
+      padding-top: 4px;
+      font-size: 12px;
+      min-height: 30px;
+
+      &:before {
+        height 0
+        background-color transparent!important
+      }
+
+      &:after {
+        height 0
+        background-color transparent!important
+      }
+    }
+  }
+
+  &.v-input--is-focused {
+    .v-input__slot {
+      border-color: $form-border-color--focused!important
+    }
+
+    .v-text-field__details {
+      &:before {
+        background-color transparent!important
+      }
+
+      &:after {
+        background-color transparent!important
+      }
+    }
+  }
+}
+
+.v-text-field .v-label {
+  top -40px !important
+  left -14px !important
+  color $font-color !important
+  font-size 16px
+  transform none!important
+  font-family 'Source Sans Pro', sans-serif
+  line-height 24px
+}
+
+
+.input-group--selection-controls__ripple:before {
+  background $blue-brand-color!important
+}
+
+.input-group.input-group--selection-controls label {
+  color $font-color!important
+}
+
+.theme--light .input-group--selection-controls .icon--selection-control {
+  color $blue-brand-color!important
+}
+
+
+.input-group--select .input-group__selections__comma {
+  font-size 18px
+}
+
+.v-autocomplete__content {
+  box-shadow none
+  border 2px solid #e7ebed
+
+  .v-list {
+    .v-list__tile--highlighted {
+      background transparent
+    }
+
+    .v-list__tile--active {
+      color $blue-brand-color!important
+    }
+    .v-list__tile {
+      font-size 18px
+      font-weight 700
+
+    }
+
+    .v-list__tile--link {
+      &:hover {
+        background transparent
+
+        .v-list__tile__title {
+          opacity 0.5
+        }
+      }
+    }
+  }
+}
+
+.v-text-field.v-input-group--is-focused v-label {
+  transform none!important
+}
+
+.input-group--text-field.input-group--dirty v-label{
+  transform none!important
+}
+
+.v-select .v-input__icon--append {
+  display none
+}
+
+.v-select .v-input__control {
+  &::after {
+    top: 20px;
+    right: 20px;
+    position: absolute;
+    display: inline-block;
+    width: 10px;
+    height: 7px;
+    content: "";
+    background: url("~assets/images/red_arrow.png") no-repeat;
+    background-size: contain;
+    transition all 0.4s ease
+  }
+
+}
+
+.v-select.v-select--is-menu-active .v-input__control {
+  &::after {
+    top: 20px;
+    right: 20px;
+    position: absolute;
+    display: inline-block;
+    width: 10px;
+    height: 7px;
+    content: "";
+    background: url("~assets/images/red_arrow.png") no-repeat;
+    background-size: contain;
+    transform rotate(180deg)
+    transition all 0.3s ease
+  }
+
+}
+
+.v-datatable__actions {
+  .v-select .v-input__control::after {
+      display none!important
+  }
+
+}
+
+.backup-table {
+  background-color: $light-gray-bg;
+  width: 100%;
+  padding: 10px;
+
+  th {
+    text-transform: uppercase;
+    font-size: 14px;
+    text-align: center;
+    font-weight: normal;
+    color: #454545;
+    padding: 20px 10px 10px 10px;
+  }
+
+  tbody {
+    td {
+      text-align: center;
+      padding: 10px;
+
+      &:first-child {
+        text-transform: uppercase;
+        font-size: 14px;
+        text-align: center;
+        font-weight: normal;
+        color: #454545;
+        width: 150px;
+      }
+    }
+
+    tr:last-child {
+      td {
+        padding: 10px 10px 20px 10px;
+      }
+    }
+  }
+}
+
+input[type="checkbox"] + label::before,
+input[type="radio"] + label::before {
+  content: "";
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  margin: 0 10px 0 0;
+  background-repeat: no-repeat;
+  position: relative;
+  top: 4px;
+}
+
+td {
+  input[type="checkbox"] + label::before,
+  input[type="radio"] + label::before {
+    margin: 0;
+  }
+}
+
+input[type="checkbox"] + label::before,
+input[type="radio"] + label.radio-as-checkbox::before {
+  background-image: url("~assets/images/boodet-checkbox-off.png");
+  color: $blue-brand-color
+}
+
+input[type="checkbox"]:checked + label::before,
+input[type="radio"]:checked + label.radio-as-checkbox::before{
+  background-image: url("~assets/images/boodet-checkbox-on.png");
+}
+
+.v-icon.material-icons {
+  color $blue-brand-color !important
+}
