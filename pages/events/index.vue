@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout row class="mmt-3">
-      <v-flex xs9 class="dd-flex" align-center justify-start>
+      <v-flex xs10 class="dd-flex" align-center justify-start>
         <div class="display-1 medium mmr-3">События</div>
         <div class="search-icon d-block" v-if="!isShowSearchInput">
           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" @click="showSearchInput">
@@ -31,7 +31,7 @@
         </div>
 
         <div class="mml-2 text-xs-center">
-          Процент прохода<br> <span class="bold">{{ (eventsPlusCount/(eventsPlusCount+eventsMinusCount)*100).toFixed(2) }}%</span>
+          Процент прохода<br> <span class="bold">{{ (eventsPlusCount/(eventsPlusCount+eventsMinusCount)*100).toFixed(2) }} %</span>
         </div>
         <div class="mml-2 text-xs-center">
           Начальный банк<br> <span class="bold">{{ startBank }}</span>
@@ -39,6 +39,14 @@
 
         <div class="mml-2 text-xs-center">
           Итоговый банк<br> <span class="bold">{{ finalSum.toFixed(0) }}</span>
+        </div>
+
+        <div class="mml-2 text-xs-center">
+          Прирост банка<br> <span class="bold">{{ ((finalSum.toFixed(0)-startBank)/startBank*100).toFixed(2) }} %</span>
+        </div>
+
+        <div class="mml-2 text-xs-center">
+          Средняя профитность ставки<br> <span class="bold">{{ ((finalSum.toFixed(0)-startBank)/(eventsPlusCount + eventsMinusCount)/(startBank*0.05) * 100).toFixed(2) }} %</span>
         </div>
       </v-flex>
       <v-spacer></v-spacer>
@@ -78,8 +86,8 @@
               </template>
             </td>
             <td>
-              <template v-if="props.item.view.stats.off_target">
-                В створ: {{props.item.view.stats.goals[0]}} - {{props.item.view.stats.goals[1]}}<br>
+              <template v-if="props.item.view.stats.on_target && props.item.view.stats.off_target">
+                В створ: {{props.item.view.stats.on_target[0]}} - {{props.item.view.stats.on_target[1]}}<br>
                 Мимо: {{props.item.view.stats.off_target[0]}} - {{props.item.view.stats.off_target[1]}}
               </template>
             </td>
@@ -101,7 +109,8 @@
               </template>
               <template>
                 ТБ: {{ tbCommon(props.item) }}<br>
-                TБ 1 тайм: {{ tb1stHalf(props.item) }}
+                TБ 1 тайм: {{ tb1stHalf(props.item) }}<br>
+                TM 1 тайм: {{ tm1stHalf(props.item) }}
               </template>
             </td>
             <td>
@@ -169,7 +178,7 @@
         confirmDeleteProductDialog: false,
         deletingProduct: null,
         haveProcessingProducts: false,
-        startBank: 20000
+        startBank: 10000
 
       }
     },
@@ -183,29 +192,7 @@
       },
       eventsMinusCount: resultFunctions.winnerMinus,
       eventsPlusCount: resultFunctions.winnerPlus,
-      finalSum() {
-        let sum = this.startBank;
-
-        _.forEach(this.$store.state.events, function(item) {
-          if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
-            if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
-              if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
-                sum += (sum*0.05*item.odds['1_1'][0].home_od - sum*0.05)
-              } else {
-                sum -= sum*0.05
-              }
-            } else {
-              if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
-                sum += (sum*0.05*item.odds['1_1'][0].away_od - sum*0.05)
-              } else {
-                sum -= sum*0.05
-              }
-            }
-          }
-        })
-
-        return sum;
-      }
+      finalSum: resultFunctions.winnerFinalSum
     },
 
     methods: {
@@ -229,6 +216,12 @@
       tb1stHalf(item) {
         if (item.odds && item.odds['1_6'] && item.odds['1_6']['0']) {
           return item.odds['1_6']['0'].over_od + '/' + item.odds['1_6']['0'].handicap
+        }
+      },
+
+      tm1stHalf(item) {
+        if (item.odds && item.odds['1_6'] && item.odds['1_6']['0']) {
+          return item.odds['1_6']['0'].under_od + '/' + item.odds['1_6']['0'].handicap
         }
       },
 

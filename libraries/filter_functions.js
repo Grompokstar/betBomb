@@ -7,11 +7,10 @@ function totalGoals(item) {
 
   if (item.view.scores) {
     totalGoals = parseInt(item.view.scores['2'].home) + parseInt(item.view.scores['2'].away);
-    return totalGoals <= 0
+    return totalGoals === 0
   } else {
     return false
   }
-
 
 }
 
@@ -23,7 +22,26 @@ function startTB(item) {
     if (startTotalOdd) {
       let handicapArray = startTotalOdd.handicap.split(',');
 
-      return (parseFloat(startTotalOdd.over_od) <= 1.6 || parseFloat(handicapArray[0]) > 2.5 && startTotalOdd.over_od < 1.9)
+      return parseFloat(startTotalOdd.over_od) < 2
+    } else {
+      return false
+    }
+  }
+}
+
+function startResultOdd(item) {
+  if (item.odds['1_1'] && item.scores ) {
+    let resultOdds = item.odds['1_1'];
+    let startResultOdd = resultOdds[resultOdds.length - 1];
+
+    if (startResultOdd) {
+      if (parseFloat(startResultOdd.home_od) < 1.5) {
+        return item.scores['2'].home < item.scores['2'].away
+      } else if (parseFloat(startResultOdd.away_od) < 1.5) {
+        return item.scores['2'].home > item.scores['2'].away
+      } else {
+        return false
+      }
     } else {
       return false
     }
@@ -32,12 +50,13 @@ function startTB(item) {
 
 function leagueName(item) {
   if (item.league && item.league.name) {
-    let leagueNameFilter = ['50', '60', '70'];
+    let leagueNameFilter = ['50', '60', '70', "Friendlies", "Friedly"];
 
     return item.league.name.indexOf(leagueNameFilter[0]) === -1
       && item.league.name.indexOf(leagueNameFilter[1]) === -1
       && item.league.name.indexOf(leagueNameFilter[2]) === -1
       && item.league.name.indexOf(leagueNameFilter[3]) === -1
+      && item.league.name.indexOf(leagueNameFilter[4]) === -1
   }
 }
 
@@ -59,6 +78,7 @@ function attacksBot3(item) {
 }
 
 function attacksBot2(item) {
+  return true
   if (item.view && item.view.stats && item.view.stats.on_target  && item.view.stats.off_target && item.view.stats.attacks && item.view.stats.dangerous_attacks) {
     let goalsOnTarget = 0;
     goalsOnTarget = parseInt(item.view.stats.on_target[0]) + parseInt(item.view.stats.on_target[1]);
@@ -118,8 +138,11 @@ function attacksBot1(item) {
 function attacks(item) {
   //return item.view && item.view.stats && item.view.stats.on_target && item.view.stats.attacks && item.view.stats.dangerous_attacks
   if (item.view && item.view.stats && item.view.stats.on_target && item.view.stats.attacks && item.view.stats.dangerous_attacks) {
-   /* let goalsOnTarget = 0;
+    let goalsOnTarget = 0;
     goalsOnTarget = parseInt(item.view.stats.on_target[0]) + parseInt(item.view.stats.on_target[1]);
+
+    let goalsOffTarget = 0;
+    goalsOffTarget = parseInt(item.view.stats.off_target[0]) + parseInt(item.view.stats.off_target[1]);
 
     let attacksSumm = 0;
     attacksSumm = parseInt(item.view.stats.attacks[0]) + parseInt(item.view.stats.attacks[1]);
@@ -127,7 +150,9 @@ function attacks(item) {
     let dangerAttacksSumm = 0
     dangerAttacksSumm = parseInt(item.view.stats.dangerous_attacks[0]) + parseInt(item.view.stats.dangerous_attacks[1]);
 
-    let dangerAttacksDif = Math.abs(parseInt(item.view.stats.dangerous_attacks[0]) - parseInt(item.view.stats.dangerous_attacks[1]));*/
+    let dangerAttacksDif = Math.abs(parseInt(item.view.stats.dangerous_attacks[0]) - parseInt(item.view.stats.dangerous_attacks[1]));
+
+    let attacksKef = dangerAttacksSumm/attacksSumm;
 
     let dangerAttacksKef;
 
@@ -137,7 +162,7 @@ function attacks(item) {
       dangerAttacksKef = parseInt(item.view.stats.dangerous_attacks[1])/parseInt(item.view.stats.dangerous_attacks[0]);
     }
 
-    return dangerAttacksKef > 2.5
+    return dangerAttacksKef >= 2.5
   } else {
     return false
   }
@@ -153,7 +178,7 @@ function currentWinner(item) {
     let winnerOdds = item.odds['1_1'];
     let currentWinnerOdd = winnerOdds[0];
 
-    if (parseFloat(currentWinnerOdd.home_od) >= 2 && parseFloat(currentWinnerOdd.away_od) >= 2) {
+    if (parseFloat(currentWinnerOdd.home_od) >= 1.8 && parseFloat(currentWinnerOdd.away_od) >= 1.8) {
       return true
     } else {
       return false
@@ -170,5 +195,6 @@ export const filterFunctions = {
   attacksBot3: attacksBot3,
   totalGoals: totalGoals,
   attacks: attacks,
-  currentWinner: currentWinner
+  currentWinner: currentWinner,
+  startResultOdd: startResultOdd
 }

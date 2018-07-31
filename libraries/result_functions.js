@@ -30,6 +30,36 @@ function tb1stHalfPlus() {
   return count;
 }
 
+function tm1stHalfMinus() {
+  let count = 0;
+  _.forEach(this.$store.state.events, function (item) {
+    if (item.scores && item.resultView && item.resultView.scores) {
+      let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
+      let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
+      if (finishGoalsSum > startGoalsSum) {
+        count++
+      }
+    }
+  })
+
+  return count;
+}
+
+function tm1stHalfPlus() {
+  let count = 0;
+  _.forEach(this.$store.state.events, function (item) {
+    if (item.scores && item.resultView && item.resultView.scores) {
+      let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
+      let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
+      if (finishGoalsSum === startGoalsSum) {
+        count++
+      }
+    }
+  })
+
+  return count;
+}
+
 function getTB1stHalfClass(item) {
   if (item.scores && item.resultView && item.resultView.scores) {
     let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
@@ -38,6 +68,22 @@ function getTB1stHalfClass(item) {
       return 'minus'
     } else {
       return 'plus'
+    }
+  } else {
+    return 'default'
+  }
+}
+
+
+
+function getTM1stHalfClass(item) {
+  if (item.scores && item.resultView && item.resultView.scores) {
+    let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
+    let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
+    if (finishGoalsSum === startGoalsSum) {
+      return 'plus'
+    } else {
+      return 'minus'
     }
   } else {
     return 'default'
@@ -100,11 +146,82 @@ function getWinnerClass(item) {
   }
 }
 
+function winnerFinalSum() {
+  let sum = this.startBank;
+  let stavka = this.startBank/20
+
+  _.forEach(this.$store.state.events, function(item) {
+    if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
+      if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
+        if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
+          sum += (stavka*item.odds['1_1'][0].home_od - stavka)
+        } else {
+          sum -= stavka
+        }
+      } else {
+        if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
+          sum += (stavka*item.odds['1_1'][0].away_od - stavka)
+        } else {
+          sum -= stavka
+        }
+      }
+    }
+  })
+
+  return sum;
+}
+
+function TBFinalSum() {
+  let sum = this.startBank;
+  let stavka = this.startBank/20
+
+  _.forEach(this.$store.state.events, function(item) {
+    if (item.scores && item.resultView && item.resultView.scores) {
+      let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
+      let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
+      if (finishGoalsSum <= startGoalsSum) {
+        sum += (stavka*1.5 - stavka);
+      } else {
+        sum -= stavka;
+      }
+    }
+
+  })
+
+  return sum;
+}
+
+function TMFinalSum() {
+  let sum = this.startBank;
+  let stavka = this.startBank/20
+
+  _.forEach(this.$store.state.events, function(item) {
+    if (item.scores && item.resultView && item.resultView.scores) {
+      let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
+      let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
+      if (finishGoalsSum === startGoalsSum) {
+        sum += (stavka*2 - stavka);
+      } else {
+        sum -= stavka;
+      }
+    }
+
+  })
+
+  return sum;
+}
+
 export const resultFunctions = {
   tb1stHalfMinus: tb1stHalfMinus,
   tb1stHalfPlus: tb1stHalfPlus,
+  tm1stHalfMinus: tm1stHalfMinus,
+  tm1stHalfPlus: tm1stHalfPlus,
   winnerPlus: winnerPlus,
   winnerMinus: winnerMinus,
   getTB1stHalfClass: getTB1stHalfClass,
-  getWinnerClass: getWinnerClass
+  getWinnerClass: getWinnerClass,
+  winnerFinalSum: winnerFinalSum,
+  TBFinalSum: TBFinalSum,
+  TMFinalSum: TMFinalSum,
+  getTM1stHalfClass: getTM1stHalfClass
 }

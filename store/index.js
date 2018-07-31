@@ -137,6 +137,7 @@ export const mutations = {
     filterData = _.filter(filterData, filterFunctions.totalGoals);
     filterData = _.filter(filterData, filterFunctions.attacks);
     filterData = _.filter(filterData, filterFunctions.currentWinner);
+    filterData = _.filter(filterData, filterFunctions.startTB);
     filterData = _.sortBy(filterData, 'time');
     state.events = filterData;
   },
