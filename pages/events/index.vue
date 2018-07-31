@@ -18,22 +18,32 @@
                       class="without-details"
         ></v-text-field>
         <div class="mml-3 text-xs-center">
-          Всего матчей:<br> <span class="bold">{{ eventsCount }}</span>
+          Всего матчей<br> <span class="bold">{{ eventsCount }}</span>
         </div>
         <div class="mml-2 text-xs-center">
-          Плюсов:<br> <span class="bold green--text">{{ eventsPlusCount }}</span>
+          Не рассчитано<br> <span class="bold">{{ eventsCount - (eventsPlusCount+eventsMinusCount) }}</span>
         </div>
         <div class="mml-2 text-xs-center">
-          Минусов:<br> <span class="bold red--text">{{ eventsMinusCount }}</span>
+          Плюсов<br> <span class="bold green--text">{{ eventsPlusCount }}</span>
+        </div>
+        <div class="mml-2 text-xs-center">
+          Минусов<br> <span class="bold red--text">{{ eventsMinusCount }}</span>
         </div>
 
         <div class="mml-2 text-xs-center">
-          Процент:<br> <span class="bold">{{ (eventsPlusCount/(eventsPlusCount+eventsMinusCount)*100).toFixed(2) }}%</span>
+          Процент прохода<br> <span class="bold">{{ (eventsPlusCount/(eventsPlusCount+eventsMinusCount)*100).toFixed(2) }}%</span>
+        </div>
+        <div class="mml-2 text-xs-center">
+          Начальный банк<br> <span class="bold">{{ startBank }}</span>
         </div>
 
         <div class="mml-2 text-xs-center">
-          Не рассчитано:<br> <span class="bold">{{ eventsCount - (eventsPlusCount+eventsMinusCount) }}</span>
+          Итоговый банк<br> <span class="bold">{{ finalSum.toFixed(0) }}</span>
         </div>
+      </v-flex>
+      <v-spacer></v-spacer>
+      <v-flex class="text-xs-right">
+        <div class="boodet-btn" @click="refreshList">Обновить</div>
       </v-flex>
     </v-layout>
 
@@ -62,12 +72,16 @@
               <b>{{ props.item.timer.tm }}</b> минута
             </td>
             <td>
-              Атаки: {{props.item.view.stats.attacks[0]}} - {{props.item.view.stats.attacks[1]}}<br>
-              Опасные: {{props.item.view.stats.dangerous_attacks[0]}} - {{props.item.view.stats.dangerous_attacks[1]}}
+              <template v-if="props.item.view.stats.attacks">
+                Атаки: {{props.item.view.stats.attacks[0]}} - {{props.item.view.stats.attacks[1]}}<br>
+                Опасные: {{props.item.view.stats.dangerous_attacks[0]}} - {{props.item.view.stats.dangerous_attacks[1]}}
+              </template>
             </td>
             <td>
-              В створ: {{props.item.view.stats.goals[0]}} - {{props.item.view.stats.goals[1]}}<br>
-              Мимо: {{props.item.view.stats.off_target[0]}} - {{props.item.view.stats.off_target[1]}}
+              <template v-if="props.item.view.stats.off_target">
+                В створ: {{props.item.view.stats.goals[0]}} - {{props.item.view.stats.goals[1]}}<br>
+                Мимо: {{props.item.view.stats.off_target[0]}} - {{props.item.view.stats.off_target[1]}}
+              </template>
             </td>
             <td>
               Желтые: {{props.item.view.stats.yellowcards[0]}} - {{props.item.view.stats.yellowcards[1]}}<br>
@@ -85,8 +99,8 @@
               Исход: {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].home_od }} - {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].away_od }}  =>
               {{ props.item.odds['1_1']['0'].home_od }} - {{ props.item.odds['1_1']['0'].away_od }}<br>
               </template>
-              <template v-if="props.item.odds['1_3'] && props.item.odds['1_6']">
-                ТБ: {{ props.item.odds['1_3'][props.item.odds['1_3'].length - 1].over_od }}/{{ props.item.odds['1_3'][props.item.odds['1_3'].length - 1].handicap }}<br>
+              <template>
+                ТБ: {{ tbCommon(props.item) }}<br>
                 TБ 1 тайм: {{ tb1stHalf(props.item) }}
               </template>
             </td>
@@ -114,6 +128,7 @@
   import axios from 'axios'
   import _ from 'lodash'
   import { makeErrorObject, calculatePrice } from '../../libraries/helpers'
+  import { resultFunctions } from '../../libraries/result_functions'
 
   export default {
     mounted() {
@@ -153,7 +168,8 @@
         rowPerPageItems: [5, 10, 25, 50, {"text": this.$t('tablesCommon.pagination.all'), "value": -1}],
         confirmDeleteProductDialog: false,
         deletingProduct: null,
-        haveProcessingProducts: false
+        haveProcessingProducts: false,
+        startBank: 20000
 
       }
     },
@@ -165,34 +181,30 @@
       eventsCount() {
         return this.$store.state.events.length
       },
-      eventsMinusCount() {
-        let count = 0;
-        _.forEach(this.$store.state.events, function (item) {
-          if (item.scores && item.resultView && item.resultView.scores) {
-            let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
-            let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
-            if (finishGoalsSum <= startGoalsSum) {
-              count++
+      eventsMinusCount: resultFunctions.winnerMinus,
+      eventsPlusCount: resultFunctions.winnerPlus,
+      finalSum() {
+        let sum = this.startBank;
+
+        _.forEach(this.$store.state.events, function(item) {
+          if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
+            if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
+              if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
+                sum += (sum*0.05*item.odds['1_1'][0].home_od - sum*0.05)
+              } else {
+                sum -= sum*0.05
+              }
+            } else {
+              if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
+                sum += (sum*0.05*item.odds['1_1'][0].away_od - sum*0.05)
+              } else {
+                sum -= sum*0.05
+              }
             }
           }
         })
 
-        return count;
-      },
-
-      eventsPlusCount() {
-        let count = 0;
-        _.forEach(this.$store.state.events, function (item) {
-          if (item.scores && item.resultView && item.resultView.scores) {
-            let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
-            let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
-            if (finishGoalsSum > startGoalsSum) {
-              count++
-            }
-          }
-        })
-
-        return count;
+        return sum;
       }
     },
 
@@ -212,25 +224,30 @@
         }
       },
 
-      getResult(item) {
-        if (item.scores && item.resultView && item.resultView.scores) {
-          let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
-          let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
-          if (finishGoalsSum <= startGoalsSum) {
-            return 'minus'
-          } else {
-            return 'plus'
-          }
-        } else {
-          return 'default'
-        }
-      },
+      getResult: resultFunctions.getWinnerClass,
 
-       tb1stHalf(item) {
+      tb1stHalf(item) {
         if (item.odds && item.odds['1_6'] && item.odds['1_6']['0']) {
           return item.odds['1_6']['0'].over_od + '/' + item.odds['1_6']['0'].handicap
         }
+      },
 
+      tbCommon(item) {
+        if (item.odds && item.odds['1_3'] && item.odds['1_3'].length >= 1) {
+          return item.odds['1_3'][item.odds['1_3'].length - 1].over_od + '/' + item.odds['1_3'][item.odds['1_3'].length - 1].handicap
+        }
+      },
+
+      refreshList() {
+        this.isLoadingProducts = true;
+        this.$store.dispatch('getEvents').then(response => {
+          this.isLoadingProducts = false;
+          if (response.status === 200) {
+            this.$store.commit('setEvents', response)
+          } else {
+            this.$toast.error(makeErrorObject(response))
+          }
+        });
       }
     }
 
