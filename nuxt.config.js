@@ -28,8 +28,7 @@ module.exports = {
     '~/plugins/bootstrap.js',
     '~/plugins/vuetify.js',
     '~/plugins/vuei18n.js',
-    { src: '~/plugins/cxlt-vue2-toastr.js', ssr: false },
-    { src: '~/plugins/noVNC.js', ssr: false }
+    { src: '~/plugins/cxlt-vue2-toastr.js', ssr: false }
   ],
   css: [
     'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css',
@@ -47,7 +46,9 @@ module.exports = {
     vendor: [
       'jquery',
       'bootstrap',
-      '~/plugins/vuetify.js'
+      '~/plugins/vuetify.js',
+      'chart.js',
+      'vue-chartjs'
     ],
     extractCSS: true,
     plugins: [

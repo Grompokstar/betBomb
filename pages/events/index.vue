@@ -54,6 +54,9 @@
         <div class="boodet-btn" @click="refreshList">Обновить</div>
       </v-flex>
     </v-layout>
+    <div class="chart-container mmt-2">
+      <bets-chart :chartData="chartData" :options="chartOptions"></bets-chart>
+    </div>
 
     <v-layout>
       <v-data-table
@@ -138,8 +141,13 @@
   import _ from 'lodash'
   import { makeErrorObject, calculatePrice } from '../../libraries/helpers'
   import { resultFunctions } from '../../libraries/result_functions'
+  import BetsChart from '~/components/charts/BetsChart'
 
   export default {
+    components: {
+      BetsChart
+    },
+
     mounted() {
       this.$store.dispatch('getEvents').then(response => {
         this.isLoadingProducts = false;
@@ -178,7 +186,20 @@
         confirmDeleteProductDialog: false,
         deletingProduct: null,
         haveProcessingProducts: false,
-        startBank: 10000
+        startBank: 10000,
+        chartOptions: {
+          responsive: true
+        },
+        chartData: {
+          labels: [],
+          datasets: [
+            {
+              label: 'Размер банка',
+              backgroundColor: '#f87979',
+              data: []
+            }
+          ]
+        }
 
       }
     },
@@ -285,6 +306,14 @@
 
     .product-status {
       font-weight 400!important
+    }
+  }
+
+  .chart-container {
+    max-height 700px
+
+    #line-chart {
+      max-height 700px
     }
   }
 

@@ -6,7 +6,7 @@
   "private": true,
   "config": {
     "nuxt": {
-      "port": "3366"
+      "port": "3388"
     }
   },
   "scripts": {
@@ -24,6 +24,7 @@
     "@nuxtjs/sentry": "^1.0.3",
     "axios": "^0.18.0",
     "bootstrap": "^4.1.0",
+    "chart.js": "^2.7.2",
     "cookie-universal-nuxt": "^2.0.3",
     "cxlt-vue2-toastr": "^1.1.0",
     "is-browser": "^2.0.1",
@@ -31,6 +32,7 @@
     "lodash": "^4.17.10",
     "nuxt": "^1.0.0",
     "popper.js": "^1.14.3",
+    "vue-chartjs": "^3.3.2",
     "vue-i18n": "^8.0.0",
     "vuetify": "^1.0.0"
   },

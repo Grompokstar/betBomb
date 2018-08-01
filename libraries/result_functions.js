@@ -148,7 +148,26 @@ function getWinnerClass(item) {
 
 function winnerFinalSum() {
   let sum = this.startBank;
-  let stavka = this.startBank/20
+  let stavka = this.startBank/20;
+  let count = 0;
+  let labels = [];
+  let dataset = [];
+
+  labels.push(count);
+  dataset.push(sum);
+
+  let chartData = {
+    labels: [],
+      datasets: [
+      {
+        label: 'Размер банка',
+        backgroundColor: '#f87979',
+        data: []
+      }
+    ]
+  }
+
+
 
   _.forEach(this.$store.state.events, function(item) {
     if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
@@ -165,8 +184,16 @@ function winnerFinalSum() {
           sum -= stavka
         }
       }
+
+      count++;
+      dataset.push(sum);
+      labels.push(count);
     }
-  })
+  }.bind(this));
+
+  chartData.datasets[0].data = dataset;
+  chartData.labels = labels;
+  this.chartData = chartData;
 
   return sum;
 }
