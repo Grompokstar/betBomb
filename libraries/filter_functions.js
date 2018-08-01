@@ -162,7 +162,7 @@ function attacks(item) {
       dangerAttacksKef = parseInt(item.view.stats.dangerous_attacks[1])/parseInt(item.view.stats.dangerous_attacks[0]);
     }
 
-    return dangerAttacksKef >= 2.5
+    return dangerAttacksKef >= 2.3
   } else {
     return false
   }

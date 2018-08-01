@@ -46,7 +46,7 @@
         </div>
 
         <div class="mml-2 text-xs-center">
-          Средняя профитность ставки<br> <span class="bold">{{ ((finalSum.toFixed(0)-startBank)/(eventsPlusCount + eventsMinusCount)/(startBank*0.05) * 100).toFixed(2) }} %</span>
+          Профитность ставки<br> <span class="bold">{{ ((finalSum.toFixed(0)-startBank)/(eventsPlusCount + eventsMinusCount)/(startBank*0.05) * 100).toFixed(2) }} %</span>
         </div>
       </v-flex>
       <v-spacer></v-spacer>
