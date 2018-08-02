@@ -95,11 +95,11 @@ function winnerPlus() {
   _.forEach(this.$store.state.events, function (item) {
     if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
       if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
-        if (parseInt(item.resultView.scores['1'].home) > parseInt(item.resultView.scores['1'].away)) {
+        if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
           count ++
         }
       } else {
-        if (parseInt(item.resultView.scores['1'].home) < parseInt(item.resultView.scores['1'].away)) {
+        if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
           count ++
         }
       }
@@ -114,11 +114,11 @@ function winnerMinus() {
   _.forEach(this.$store.state.events, function (item) {
     if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
       if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
-        if (parseInt(item.resultView.scores['1'].home) <= parseInt(item.resultView.scores['1'].away)) {
+        if (parseInt(item.resultView.scores['2'].home) <= parseInt(item.resultView.scores['2'].away)) {
           count ++
         }
       } else {
-        if (parseInt(item.resultView.scores['1'].home) >= parseInt(item.resultView.scores['1'].away)) {
+        if (parseInt(item.resultView.scores['2'].home) >= parseInt(item.resultView.scores['2'].away)) {
           count ++
         }
       }
@@ -158,13 +158,13 @@ function drawMinus() {
 function getWinnerClass(item) {
   if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
     if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
-      if (parseInt(item.resultView.scores['1'].home) > parseInt(item.resultView.scores['1'].away)) {
+      if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
         return 'plus'
       } else {
         return 'minus'
       }
     } else {
-      if (parseInt(item.resultView.scores['1'].home) < parseInt(item.resultView.scores['1'].away)) {
+      if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
         return 'plus'
       } else {
         return 'minus'
@@ -339,10 +339,10 @@ function _1stHalfDrawSum() {
     ]
   }
 
-
-
   _.forEach(this.$store.state.events, function(item) {
-    if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1'] && item.view.stats.dangerous_attacks && item.odds['1_8'] && item.odds['1_8'][0] && parseFloat(item.odds['1_8'][0].draw_od) > 1 ) {
+    if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1'] && item.resultView.scores['2']
+      && item.odds['1_8'] && item.odds['1_8'][0] && parseFloat(item.odds['1_8'][0].draw_od) > 1 && item.odds['1_8']
+      && item.odds['1_1'][0] && parseFloat(item.odds['1_1'][0].draw_od) > 1 ) {
       if (parseInt(item.resultView.scores['1'].home) === parseInt(item.resultView.scores['1'].away)) {
         sum += (stavka*item.odds['1_8'][0].draw_od - stavka)
       } else {

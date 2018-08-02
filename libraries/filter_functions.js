@@ -22,7 +22,7 @@ function startTB(item) {
     if (startTotalOdd) {
       let handicapArray = startTotalOdd.handicap.split(',');
 
-      return startTotalOdd.over_od > 1.6 && parseFloat(handicapArray[0]) <= 2.5 || startTotalOdd.over_od > 1.85 && parseFloat(handicapArray[0]) > 2.5
+      return startTotalOdd.over_od < 1.75 || startTotalOdd.over_od < 2 && parseFloat(handicapArray[0]) > 2.5
     } else {
       return false
     }
@@ -176,7 +176,7 @@ function attacks(item) {
       attacksRatioKef = parseInt(item.view.stats.attacks[1])/parseInt(item.view.stats.attacks[0]);
     }
 
-    return (dangerAttacksKef < 1.35 && attacksRatioKef < 1.35)
+    return (dangerAttacksKef > 2.5)
   } else {
     return false
   }
@@ -238,6 +238,18 @@ function halfTimeWinnerOdds(item) {
   }
 }
 
+function favoriteLoses(item) {
+  if (item.view.scores && item.view.scores['2'] && item.odds['1_1'] && parseFloat(item.odds['1_1'][0].home_od) > 1) {
+    if (parseFloat(item.odds['1_1'][0].home_od) < 2 && item.view.scores['2'].home < item.view.scores['2'].away) {
+      return true
+    } else if (parseFloat(item.odds['1_1'][0].away_od) < 2 && item.view.scores['2'].home > item.view.scores['2'].away) {
+      return true
+    }
+  } else {
+    return false
+  }
+}
+
 export const filterFunctions = {
   all: all,
   startTB: startTB,
@@ -249,5 +261,6 @@ export const filterFunctions = {
   attacks: attacks,
   currentWinner: currentWinner,
   startResultOdd: startResultOdd,
-  halfTimeWinnerOdds: halfTimeWinnerOdds
+  halfTimeWinnerOdds: halfTimeWinnerOdds,
+  favoriteLoses: favoriteLoses
 }

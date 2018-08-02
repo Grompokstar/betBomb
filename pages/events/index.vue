@@ -106,7 +106,7 @@
               </span>
             </td>
             <td>
-              <template v-if="props.item.odds['1_1'] && props.item.odds['1_8']">
+              <template v-if="props.item.odds['1_1'] && props.item.odds['1_8'] && props.item.odds['1_8']['0']">
               Исход: {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].home_od }} - {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].away_od }}  =>
               {{ props.item.odds['1_1']['0'].home_od }} - {{ props.item.odds['1_1']['0'].away_od }}<br>
               Исход 1 тайма: {{ props.item.odds['1_8']['0'].home_od }} - {{ props.item.odds['1_8']['0'].draw_od }} - {{ props.item.odds['1_8']['0'].away_od }}<br>
@@ -212,9 +212,9 @@
       eventsCount() {
         return this.$store.state.events.length
       },
-      eventsMinusCount: resultFunctions.drawMinus,
-      eventsPlusCount: resultFunctions.drawPlus,
-      finalSum: resultFunctions._1stHalfDrawSum
+      eventsMinusCount: resultFunctions.winnerMinus,
+      eventsPlusCount: resultFunctions.winnerPlus,
+      finalSum: resultFunctions.winnerFinalSum
     },
 
     methods: {
@@ -233,7 +233,7 @@
         }
       },
 
-      getResult: resultFunctions.get1halfDrawClass,
+      getResult: resultFunctions.getWinnerClass,
 
       tb1stHalf(item) {
         if (item.odds && item.odds['1_6'] && item.odds['1_6']['0']) {
