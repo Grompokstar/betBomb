@@ -106,9 +106,10 @@
               </span>
             </td>
             <td>
-              <template v-if="props.item.odds['1_1']">
+              <template v-if="props.item.odds['1_1'] && props.item.odds['1_8']">
               Исход: {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].home_od }} - {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].away_od }}  =>
               {{ props.item.odds['1_1']['0'].home_od }} - {{ props.item.odds['1_1']['0'].away_od }}<br>
+              Исход 1 тайма: {{ props.item.odds['1_8']['0'].home_od }} - {{ props.item.odds['1_8']['0'].draw_od }} - {{ props.item.odds['1_8']['0'].away_od }}<br>
               </template>
               <template>
                 ТБ: {{ tbCommon(props.item) }}<br>
@@ -211,9 +212,9 @@
       eventsCount() {
         return this.$store.state.events.length
       },
-      eventsMinusCount: resultFunctions.winnerMinus,
-      eventsPlusCount: resultFunctions.winnerPlus,
-      finalSum: resultFunctions.winnerFinalSum
+      eventsMinusCount: resultFunctions.drawMinus,
+      eventsPlusCount: resultFunctions.drawPlus,
+      finalSum: resultFunctions._1stHalfDrawSum
     },
 
     methods: {
@@ -232,7 +233,7 @@
         }
       },
 
-      getResult: resultFunctions.getWinnerClass,
+      getResult: resultFunctions.get1halfDrawClass,
 
       tb1stHalf(item) {
         if (item.odds && item.odds['1_6'] && item.odds['1_6']['0']) {
@@ -310,10 +311,8 @@
   }
 
   .chart-container {
-    max-height 700px
-
     #line-chart {
-      max-height 700px
+      max-height 650px
     }
   }
 
