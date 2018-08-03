@@ -185,7 +185,7 @@ function get1halfDrawClass(item) {
 
 function winnerFinalSum() {
   let sum = this.startBank;
-  let stavka = this.startBank/20;
+  let stavka = this.startBank*this.betSize;
   let count = 0;
   let labels = [];
   let dataset = [];
@@ -364,20 +364,46 @@ function _1stHalfDrawSum() {
 
 function TBFinalSum() {
   let sum = this.startBank;
-  let stavka = this.startBank/20
+  let stavka = this.startBank/20;
+  let count = 0;
+  let labels = [];
+  let dataset = [];
+
+  labels.push(count);
+  dataset.push(sum);
+
+  let chartData = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Размер банка',
+        backgroundColor: '#f87979',
+        data: []
+      }
+    ]
+  }
 
   _.forEach(this.$store.state.events, function(item) {
     if (item.scores && item.resultView && item.resultView.scores) {
       let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
       let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
-      if (finishGoalsSum <= startGoalsSum) {
-        sum += (stavka*1.5 - stavka);
+      if (finishGoalsSum > startGoalsSum) {
+        sum += (stavka*1.75 - stavka);
       } else {
         sum -= stavka;
       }
+
+
+      count++;
+      labels.push(count);
+      dataset.push(sum);
     }
 
   })
+
+  chartData.datasets[0].data = dataset;
+  chartData.labels = labels;
+  this.chartData = chartData;
 
   return sum;
 }

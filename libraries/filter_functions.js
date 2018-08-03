@@ -1,6 +1,3 @@
-function all() {
-  return true
-}
 
 function totalGoals(item) {
   let totalGoals;
@@ -176,7 +173,7 @@ function attacks(item) {
       attacksRatioKef = parseInt(item.view.stats.attacks[1])/parseInt(item.view.stats.attacks[0]);
     }
 
-    return (dangerAttacksKef > 2.5)
+    return (dangerAttacksKef >= 2.5)
   } else {
     return false
   }
@@ -186,11 +183,20 @@ function currentWinner(item) {
   if (item.odds['1_1'] && parseFloat(item.odds['1_1'][0].home_od) > 1) {
     let winnerOdds = item.odds['1_1'];
     let currentWinnerOdd = winnerOdds[0];
+    let dangerAttacksKef = parseInt(item.view.stats.dangerous_attacks[0])/parseInt(item.view.stats.dangerous_attacks[1]);
 
-    if (parseFloat(currentWinnerOdd.home_od) >= 1.05 && parseFloat(currentWinnerOdd.away_od) >= 1.05) {
-      return true
+    if (dangerAttacksKef > 1) {
+      if (parseFloat(currentWinnerOdd.home_od) >= 1 && parseFloat(currentWinnerOdd.home_od) <= 1.6) {
+        return true
+      } else {
+        return false
+      }
     } else {
-      return false
+      if (parseFloat(currentWinnerOdd.away_od) >= 1 && parseFloat(currentWinnerOdd.away_od) <= 1.6) {
+        return true
+      } else {
+        return false
+      }
     }
 
     /*if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
@@ -251,7 +257,6 @@ function favoriteLoses(item) {
 }
 
 export const filterFunctions = {
-  all: all,
   startTB: startTB,
   leagueName: leagueName,
   attacksBot1: attacksBot1,

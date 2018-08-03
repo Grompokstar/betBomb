@@ -1,8 +1,14 @@
 <template>
   <v-container>
-    <v-layout row class="mmt-3">
+    <v-layout>
+      <v-flex class="mml-3">
+        Период тестирования: <b>{{ new Date(parseInt(events[0].time) * 1000).toLocaleString('ru', {day:'numeric', month:'short', year:'numeric'}) }}  -
+        {{ new Date(parseInt(events[events.length - 1].time) * 1000).toLocaleString('ru', {day:'numeric', month:'short', year:'numeric'}) }}</b>
+      </v-flex>
+    </v-layout>
+    <v-layout row class="mmt-2">
       <v-flex xs10 class="dd-flex" align-center justify-start>
-        <div class="display-1 medium mmr-3">События</div>
+        <!--<div class="display-1 medium mmr-3">События</div>
         <div class="search-icon d-block" v-if="!isShowSearchInput">
           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" @click="showSearchInput">
             <g fill="none" fill-rule="evenodd" stroke="#FF3200" stroke-width="2" transform="matrix(-1 0 0 1 18 1)">
@@ -16,7 +22,7 @@
                       v-model="search"
                       pt-0
                       class="without-details"
-        ></v-text-field>
+        ></v-text-field>-->
         <div class="mml-3 text-xs-center">
           Всего матчей<br> <span class="bold">{{ eventsCount }}</span>
         </div>
@@ -36,6 +42,10 @@
         <div class="mml-2 text-xs-center">
           Начальный банк<br> <span class="bold">{{ startBank }}</span>
         </div>
+        <div class="mml-2 text-xs-center">
+          Размер 1 ставки<br> <span class="bold">{{ startBank/10 }}</span>
+        </div>
+
 
         <div class="mml-2 text-xs-center">
           Итоговый банк<br> <span class="bold">{{ finalSum.toFixed(0) }}</span>
@@ -46,7 +56,7 @@
         </div>
 
         <div class="mml-2 text-xs-center">
-          Профитность ставки<br> <span class="bold">{{ ((finalSum.toFixed(0)-startBank)/(eventsPlusCount + eventsMinusCount)/(startBank*0.05) * 100).toFixed(2) }} %</span>
+          Профитность оборота ставок<br> <span class="bold">{{ ((finalSum.toFixed(0)-startBank)/((eventsPlusCount + eventsMinusCount)*(startBank*betSize)) * 100).toFixed(2) }} %</span>
         </div>
       </v-flex>
       <v-spacer></v-spacer>
@@ -59,7 +69,7 @@
     </div>
 
     <v-layout>
-      <v-data-table
+      <!--<v-data-table
         :headers="headers"
         :items="events"
         :search="search"
@@ -131,7 +141,7 @@
         <template slot="pageText" slot-scope="props">
           {{ props.pageStart }} - {{ props.pageStop }} {{ $t('tablesCommon.pagination.of') }} {{ props.itemsLength }}
         </template>
-      </v-data-table>
+      </v-data-table>-->
     </v-layout>
   </v-container>
 </template>
@@ -188,6 +198,7 @@
         deletingProduct: null,
         haveProcessingProducts: false,
         startBank: 10000,
+        betSize: 0.1,
         chartOptions: {
           responsive: true
         },
