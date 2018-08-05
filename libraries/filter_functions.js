@@ -16,7 +16,13 @@ function startTB(item) {
     let totalOdds = item.odds['1_3'];
     let startTotalOdd = totalOdds[totalOdds.length - 1];
 
+
+    let handicaps_1_8 = ['2.5, 3.0', '3.0, 3,5'];
+    let handicaps_1_9 = ['3.5', '3.5, 4.0', '4.0, 4.5', '4.5', '4.5, 5.0', '5.0, 5.5', '5,5', '5.5, 6.0', '6.0, 6.5', '6.5', '6.5, 7.0', '7.0, 7.5', '7.5', '7.5, 8.0', '8.0, 8.5', '8.5'];
+
     if (startTotalOdd) {
+      let overOd = parseFloat(startTotalOdd.over_od);
+      let handicap = (startTotalOdd.handicap + '').trim();
       let handicapArray = startTotalOdd.handicap.split(',');
 
       return startTotalOdd.over_od <= 1.42 || startTotalOdd.over_od < 1.85 && parseFloat(handicapArray[0]) > 2.5
@@ -133,7 +139,7 @@ function attacksBot1(item) {
       dangerAttacksKef = parseInt(item.view.stats.dangerous_attacks[1])/parseInt(item.view.stats.dangerous_attacks[0]);
     }
 
-    return dangerAttacksKef >= 2.5 && dangerAttacksDif >= 8 && goalsOnTarget >= 2
+    return dangerAttacksKef >= 2.2 && dangerAttacksDif >= 8 && goalsOnTarget >= 3
   } else {
     return false
   }
