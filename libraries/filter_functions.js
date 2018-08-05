@@ -186,13 +186,13 @@ function currentWinner(item) {
     let dangerAttacksKef = parseInt(item.view.stats.dangerous_attacks[0])/parseInt(item.view.stats.dangerous_attacks[1]);
 
     if (dangerAttacksKef > 1) {
-      if (parseFloat(currentWinnerOdd.home_od) >= 1 && parseFloat(currentWinnerOdd.home_od) <= 1.6) {
+      if (parseFloat(currentWinnerOdd.home_od) > 1.05 && parseFloat(currentWinnerOdd.home_od) <= 4) {
         return true
       } else {
         return false
       }
     } else {
-      if (parseFloat(currentWinnerOdd.away_od) >= 1 && parseFloat(currentWinnerOdd.away_od) <= 1.6) {
+      if (parseFloat(currentWinnerOdd.away_od) > 1.05 && parseFloat(currentWinnerOdd.away_od) <= 4) {
         return true
       } else {
         return false

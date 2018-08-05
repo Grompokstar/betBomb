@@ -211,13 +211,21 @@ function winnerFinalSum() {
       && item.odds['1_1'] && item.odds['1_1'][0] && parseFloat(item.odds['1_1'][0].home_od) > 1 ) {
       if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
         if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
-          sum += (stavka*item.odds['1_1'][0].home_od - stavka)
+          if (item.odds['1_1'][0].home_od <= 1.2) {
+            sum += (stavka*item.odds['1_1'][0].home_od - stavka)
+          } else  {
+            sum += (stavka*item.odds['1_1'][0].home_od - stavka)
+          }
         } else {
           sum -= stavka
         }
       } else {
         if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
-          sum += (stavka*item.odds['1_1'][0].away_od - stavka)
+          if (item.odds['1_1'][0].away_od <= 1.2) {
+            sum += (stavka*item.odds['1_1'][0].away_od - stavka)
+          } else  {
+            sum += (stavka*item.odds['1_1'][0].away_od - stavka)
+          }
         } else {
           sum -= stavka
         }

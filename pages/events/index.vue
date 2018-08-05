@@ -2,8 +2,9 @@
   <v-container>
     <v-layout>
       <v-flex class="mml-3">
-        Период тестирования: <b>{{ new Date(parseInt(events[0].time) * 1000).toLocaleString('ru', {day:'numeric', month:'short', year:'numeric'}) }}  -
-        {{ new Date(parseInt(events[events.length - 1].time) * 1000).toLocaleString('ru', {day:'numeric', month:'short', year:'numeric'}) }}</b>
+        Период тестирования:
+        <b>{{ new Date(parseInt(startPeriod) * 1000).toLocaleString('ru', {day:'numeric', month:'short', year:'numeric'}) }}  -
+        {{ new Date(parseInt(endPeriod) * 1000).toLocaleString('ru', {day:'numeric', month:'short', year:'numeric'}) }}</b>
       </v-flex>
     </v-layout>
     <v-layout row class="mmt-2">
@@ -43,7 +44,7 @@
           Начальный банк<br> <span class="bold">{{ startBank }}</span>
         </div>
         <div class="mml-2 text-xs-center">
-          Размер 1 ставки<br> <span class="bold">{{ startBank/10 }}</span>
+          Размер 1 ставки<br> <span class="bold">{{ startBank/betSize }}</span>
         </div>
 
 
@@ -69,7 +70,7 @@
     </div>
 
     <v-layout>
-      <!--<v-data-table
+      <v-data-table
         :headers="headers"
         :items="events"
         :search="search"
@@ -141,7 +142,7 @@
         <template slot="pageText" slot-scope="props">
           {{ props.pageStart }} - {{ props.pageStop }} {{ $t('tablesCommon.pagination.of') }} {{ props.itemsLength }}
         </template>
-      </v-data-table>-->
+      </v-data-table>
     </v-layout>
   </v-container>
 </template>
@@ -198,7 +199,7 @@
         deletingProduct: null,
         haveProcessingProducts: false,
         startBank: 10000,
-        betSize: 0.1,
+        betSize: 0.05,
         chartOptions: {
           responsive: true
         },
@@ -219,6 +220,12 @@
     computed: {
       events() {
         return this.$store.state.events
+      },
+      startPeriod() {
+        //return this.$store.state.events[0].time
+      },
+      endPeriod() {
+        //return this.$store.state.events[this.$store.state.events.length - 1].time
       },
       eventsCount() {
         return this.$store.state.events.length
