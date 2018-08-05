@@ -134,10 +134,11 @@ export const mutations = {
   setEvents (state, payload) {
     let filterData = payload.data;
 
-    filterData = _.filter(filterData, filterFunctions.totalGoals);
-    filterData = _.filter(filterData, filterFunctions.attacks);
-    filterData = _.filter(filterData, filterFunctions.currentWinner);
+
+    filterData = _.filter(filterData, filterFunctions.attacksBot3);
+    filterData = _.filter(filterData, filterFunctions.leagueName);
     filterData = _.filter(filterData, filterFunctions.startTB);
+    filterData = _.filter(filterData, filterFunctions.currentTB1stHalf);
     filterData = _.sortBy(filterData, 'time');
     state.events = filterData;
   },

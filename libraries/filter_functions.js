@@ -19,7 +19,7 @@ function startTB(item) {
     if (startTotalOdd) {
       let handicapArray = startTotalOdd.handicap.split(',');
 
-      return startTotalOdd.over_od < 1.75 || startTotalOdd.over_od < 2 && parseFloat(handicapArray[0]) > 2.5
+      return startTotalOdd.over_od <= 1.6 || startTotalOdd.over_od < 1.9 && parseFloat(handicapArray[0]) > 2.5
     } else {
       return false
     }
@@ -47,13 +47,16 @@ function startResultOdd(item) {
 
 function leagueName(item) {
   if (item.league && item.league.name) {
-    let leagueNameFilter = ['50', '60', '70', "Friendlies", "Friedly"];
+    let leagueNameFilter = ['50', '60', '70', '80', 'Women', 'U18', 'U19', 'U20'];
 
     return item.league.name.indexOf(leagueNameFilter[0]) === -1
       && item.league.name.indexOf(leagueNameFilter[1]) === -1
       && item.league.name.indexOf(leagueNameFilter[2]) === -1
       && item.league.name.indexOf(leagueNameFilter[3]) === -1
       && item.league.name.indexOf(leagueNameFilter[4]) === -1
+      && item.league.name.indexOf(leagueNameFilter[5]) === -1
+      && item.league.name.indexOf(leagueNameFilter[6]) === -1
+      && item.league.name.indexOf(leagueNameFilter[7]) === -1
   }
 }
 
@@ -65,10 +68,10 @@ function attacksBot3(item) {
     let attacksSumm = 0;
     attacksSumm = parseInt(item.view.stats.attacks[0]) + parseInt(item.view.stats.attacks[1]);
 
-    let dangerAttacksSumm = 0
+    let dangerAttacksSumm = 0;
     dangerAttacksSumm = parseInt(item.view.stats.dangerous_attacks[0]) + parseInt(item.view.stats.dangerous_attacks[1]);
 
-    return goalsOnTarget >= 3 && attacksSumm >= 40 && dangerAttacksSumm/attacksSumm >= 0.5
+    return goalsOnTarget >= 3 && attacksSumm >= 38 && dangerAttacksSumm/attacksSumm >= 0.5
   } else {
     return false
   }
@@ -256,6 +259,20 @@ function favoriteLoses(item) {
   }
 }
 
+
+function currentTB1stHalf(item) {
+  if (item.odds && item.odds['1_6'] && item.odds['1_6']['0']) {
+    if (item.odds['1_6']['0'].over_od <= 1.95) {
+      return true;
+    } else {
+      return false
+    }
+
+  } else {
+    return false
+  }
+}
+
 export const filterFunctions = {
   startTB: startTB,
   leagueName: leagueName,
@@ -267,5 +284,6 @@ export const filterFunctions = {
   currentWinner: currentWinner,
   startResultOdd: startResultOdd,
   halfTimeWinnerOdds: halfTimeWinnerOdds,
-  favoriteLoses: favoriteLoses
+  favoriteLoses: favoriteLoses,
+  currentTB1stHalf: currentTB1stHalf
 }

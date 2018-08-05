@@ -44,7 +44,7 @@
           Начальный банк<br> <span class="bold">{{ startBank }}</span>
         </div>
         <div class="mml-2 text-xs-center">
-          Размер 1 ставки<br> <span class="bold">{{ startBank/betSize }}</span>
+          Размер 1 ставки<br> <span class="bold">{{ startBank*betSize }}</span>
         </div>
 
 
@@ -129,7 +129,7 @@
               </template>
             </td>
             <td>
-              <div v-if="props.item.resultView && props.item.resultView.scores" class="bold">
+              <div v-if="props.item.resultView && props.item.resultView.scores && props.item.resultView.scores['1']" class="bold">
                 {{ props.item.resultView.scores['2'].home }} - {{ props.item.resultView.scores['2'].away }}
                 ({{ props.item.resultView.scores['1'].home }} - {{ props.item.resultView.scores['1'].away }})
               </div>
@@ -199,7 +199,7 @@
         deletingProduct: null,
         haveProcessingProducts: false,
         startBank: 10000,
-        betSize: 0.05,
+        betSize: 0.1,
         chartOptions: {
           responsive: true
         },
@@ -230,9 +230,9 @@
       eventsCount() {
         return this.$store.state.events.length
       },
-      eventsMinusCount: resultFunctions.winnerMinus,
-      eventsPlusCount: resultFunctions.winnerPlus,
-      finalSum: resultFunctions.winnerFinalSum
+      eventsMinusCount: resultFunctions.tb1stHalfMinus,
+      eventsPlusCount: resultFunctions.tb1stHalfPlus,
+      finalSum: resultFunctions.TBFinalSum
     },
 
     methods: {
@@ -251,7 +251,7 @@
         }
       },
 
-      getResult: resultFunctions.getWinnerClass,
+      getResult: resultFunctions.getTB1stHalfClass,
 
       tb1stHalf(item) {
         if (item.odds && item.odds['1_6'] && item.odds['1_6']['0']) {

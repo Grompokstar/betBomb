@@ -3,7 +3,7 @@ import _ from 'lodash'
 function tb1stHalfMinus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
-    if (item.scores && item.resultView && item.resultView.scores) {
+    if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
       let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
       let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
       if (finishGoalsSum <= startGoalsSum) {
@@ -18,7 +18,7 @@ function tb1stHalfMinus() {
 function tb1stHalfPlus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
-    if (item.scores && item.resultView && item.resultView.scores) {
+    if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
       let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
       let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
       if (finishGoalsSum > startGoalsSum) {
@@ -61,7 +61,7 @@ function tm1stHalfPlus() {
 }
 
 function getTB1stHalfClass(item) {
-  if (item.scores && item.resultView && item.resultView.scores) {
+  if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
     let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
     let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
     if (finishGoalsSum <= startGoalsSum) {
@@ -372,7 +372,7 @@ function _1stHalfDrawSum() {
 
 function TBFinalSum() {
   let sum = this.startBank;
-  let stavka = this.startBank/20;
+  let stavka = this.startBank*this.betSize;
   let count = 0;
   let labels = [];
   let dataset = [];
@@ -392,11 +392,11 @@ function TBFinalSum() {
   }
 
   _.forEach(this.$store.state.events, function(item) {
-    if (item.scores && item.resultView && item.resultView.scores) {
+    if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1'] && item.scores['2']) {
       let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
       let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
       if (finishGoalsSum > startGoalsSum) {
-        sum += (stavka*1.75 - stavka);
+        sum += (stavka*1.5 - stavka);
       } else {
         sum -= stavka;
       }
