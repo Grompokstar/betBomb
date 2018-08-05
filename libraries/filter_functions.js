@@ -19,7 +19,7 @@ function startTB(item) {
     if (startTotalOdd) {
       let handicapArray = startTotalOdd.handicap.split(',');
 
-      return startTotalOdd.over_od <= 1.6 || startTotalOdd.over_od < 1.9 && parseFloat(handicapArray[0]) > 2.5
+      return startTotalOdd.over_od <= 1.42 || startTotalOdd.over_od < 1.85 && parseFloat(handicapArray[0]) > 2.5
     } else {
       return false
     }
@@ -32,10 +32,8 @@ function startResultOdd(item) {
     let startResultOdd = resultOdds[resultOdds.length - 1];
 
     if (startResultOdd) {
-      if (parseFloat(startResultOdd.home_od) < 1.5) {
-        return item.scores['2'].home < item.scores['2'].away
-      } else if (parseFloat(startResultOdd.away_od) < 1.5) {
-        return item.scores['2'].home > item.scores['2'].away
+      if (parseFloat(startResultOdd.home_od) <= 1.45 || parseFloat(startResultOdd.away_od) <= 1.45) {
+        return true
       } else {
         return false
       }
@@ -78,7 +76,6 @@ function attacksBot3(item) {
 }
 
 function attacksBot2(item) {
-  return true
   if (item.view && item.view.stats && item.view.stats.on_target  && item.view.stats.off_target && item.view.stats.attacks && item.view.stats.dangerous_attacks) {
     let goalsOnTarget = 0;
     goalsOnTarget = parseInt(item.view.stats.on_target[0]) + parseInt(item.view.stats.on_target[1]);
@@ -101,8 +98,15 @@ function attacksBot2(item) {
       dangerAttacksKef = parseInt(item.view.stats.attacks[1])/parseInt(item.view.stats.dangerous_attacks[1])
     }
 
-    return goalsOnTarget >= 1 && allGoals >= 5 && (item.view.stats.dangerous_attacks[0] <= 10 || item.view.stats.dangerous_attacks[1] <= 10)
-      && dangerAttacksDiff > 10 && dangerAttacksKef <= 1.5
+    let favoriteDangerAttacksKef;
+    if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
+      favoriteDangerAttacksKef = parseInt(item.view.stats.dangerous_attacks[0])/parseInt(item.view.stats.dangerous_attacks[1]);
+    } else {
+      favoriteDangerAttacksKef = parseInt(item.view.stats.dangerous_attacks[1])/parseInt(item.view.stats.dangerous_attacks[0]);
+    }
+
+    return goalsOnTarget >= 1 && allGoals >= 4 && (item.view.stats.dangerous_attacks[0] <= 10 || item.view.stats.dangerous_attacks[1] <= 10)
+      && favoriteDangerAttacksKef >= 2.2
   } else {
     return false
   }
