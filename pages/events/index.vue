@@ -70,7 +70,7 @@
     </div>
 
     <v-layout>
-      <v-data-table
+      <!--<v-data-table
         :headers="headers"
         :items="events"
         :search="search"
@@ -142,7 +142,7 @@
         <template slot="pageText" slot-scope="props">
           {{ props.pageStart }} - {{ props.pageStop }} {{ $t('tablesCommon.pagination.of') }} {{ props.itemsLength }}
         </template>
-      </v-data-table>
+      </v-data-table>-->
     </v-layout>
   </v-container>
 </template>
@@ -199,7 +199,7 @@
         deletingProduct: null,
         haveProcessingProducts: false,
         startBank: 10000,
-        betSize: 0.1,
+        betSize: 0.05,
         chartOptions: {
           responsive: true
         },
@@ -230,9 +230,9 @@
       eventsCount() {
         return this.$store.state.events.length
       },
-      eventsMinusCount: resultFunctions.tb1stHalfMinus,
-      eventsPlusCount: resultFunctions.tb1stHalfPlus,
-      finalSum: resultFunctions.TBFinalSum
+      eventsMinusCount: resultFunctions.winnerMinus,
+      eventsPlusCount: resultFunctions.winnerPlus,
+      finalSum: resultFunctions.winnerFinalSum
     },
 
     methods: {
@@ -251,7 +251,7 @@
         }
       },
 
-      getResult: resultFunctions.getTB1stHalfClass,
+      getResult: resultFunctions.getWinnerClass,
 
       tb1stHalf(item) {
         if (item.odds && item.odds['1_6'] && item.odds['1_6']['0']) {
