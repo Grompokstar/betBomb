@@ -94,7 +94,7 @@ function winnerPlus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
     if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
-      if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
+      if (parseInt(item.view.stats.dangerous_attacks[0]) < parseInt(item.view.stats.dangerous_attacks[1])) {
         if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
           count ++
         }
@@ -113,7 +113,7 @@ function winnerMinus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
     if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
-      if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
+      if (parseInt(item.view.stats.dangerous_attacks[0]) < parseInt(item.view.stats.dangerous_attacks[1])) {
         if (parseInt(item.resultView.scores['2'].home) >= parseInt(item.resultView.scores['2'].away)) {
           count ++
         }
@@ -157,7 +157,7 @@ function drawMinus() {
 
 function getWinnerClass(item) {
   if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
-    if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
+    if (parseInt(item.view.stats.dangerous_attacks[0]) < parseInt(item.view.stats.dangerous_attacks[1])) {
       if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
         return 'plus'
       } else {
@@ -220,7 +220,7 @@ function winnerFinalSum() {
   _.forEach(this.$store.state.events, function(item) {
     if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks
       && item.odds['1_1'] && item.odds['1_1'][0] && parseFloat(item.odds['1_1'][0].home_od) > 1 ) {
-      if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
+      if (parseInt(item.view.stats.dangerous_attacks[0]) < parseInt(item.view.stats.dangerous_attacks[1])) {
         if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
           sum += (stavka*item.odds['1_1'][0].away_od - stavka)
         } else {
