@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <v-layout>
+    <!--<v-layout>
       <v-flex class="mml-3">
         Период тестирования:
         <b>{{ new Date(parseInt(startPeriod) * 1000).toLocaleString('ru', {day:'numeric', month:'short', year:'numeric'}) }}  -
         {{ new Date(parseInt(endPeriod) * 1000).toLocaleString('ru', {day:'numeric', month:'short', year:'numeric'}) }}</b>
       </v-flex>
-    </v-layout>
+    </v-layout>-->
     <v-layout row class="mmt-2">
       <v-flex xs10 class="dd-flex" align-center justify-start>
         <!--<div class="display-1 medium mmr-3">События</div>
@@ -70,7 +70,7 @@
     </div>
 
     <v-layout>
-      <!--<v-data-table
+      <v-data-table
         :headers="headers"
         :items="events"
         :search="search"
@@ -96,7 +96,10 @@
             <td>
               <template v-if="props.item.view.stats.attacks">
                 Атаки: {{props.item.view.stats.attacks[0]}} - {{props.item.view.stats.attacks[1]}}<br>
-                Опасные: {{props.item.view.stats.dangerous_attacks[0]}} - {{props.item.view.stats.dangerous_attacks[1]}}
+                Опасные: {{props.item.view.stats.dangerous_attacks[0]}} - {{props.item.view.stats.dangerous_attacks[1]}}<br>
+              </template>
+              <template v-if="props.item.homeDangerAttacks">
+                Опасные атаки: {{props.item.homeDangerAttacks}} - {{props.item.awayDangerAttacks}}<br>
               </template>
             </td>
             <td>
@@ -142,7 +145,7 @@
         <template slot="pageText" slot-scope="props">
           {{ props.pageStart }} - {{ props.pageStop }} {{ $t('tablesCommon.pagination.of') }} {{ props.itemsLength }}
         </template>
-      </v-data-table>-->
+      </v-data-table>
     </v-layout>
   </v-container>
 </template>

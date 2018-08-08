@@ -1,3 +1,4 @@
+import _ from 'lodash'
 
 function totalGoals(item) {
   let totalGoals;
@@ -29,7 +30,7 @@ function startTB(item) {
       let handicap = (startTotalOdd.handicap + '').trim();
       let handicapArray = startTotalOdd.handicap.split(',');
 
-      return startTotalOdd.over_od <= 1.75 || startTotalOdd.over_od < 2 && parseFloat(handicapArray[0]) > 2.5
+      return startTotalOdd.over_od >= 1.9 && parseFloat(handicapArray[0]) === 2.5 || startTotalOdd.over_od > 2 && parseFloat(handicapArray[0]) > 2.5
     } else {
       return false
     }
@@ -190,7 +191,94 @@ function attacks(item) {
       attacksRatioKef = parseInt(item.view.stats.attacks[1])/parseInt(item.view.stats.attacks[0]);
     }*/
 
-    return (dangerAttacksKef >= 1.5)
+    return (dangerAttacksKef >= 2.3)
+  } else {
+    return false
+  }
+}
+
+function trendAttacks(item) {
+  //return item.view && item.view.stats && item.view.stats.on_target && item.view.stats.attacks && item.view.stats.dangerous_attacks
+  if (item.trends && item.trends.dangerous_attacks) {
+
+    let homeDangerAttacks;
+    let awayDangerAttacks;
+
+    let home45 = _.find(item.trends.dangerous_attacks.home, function(item) {
+      return item.time_str === '65'
+    })
+
+    let home64 = _.find(item.trends.dangerous_attacks.home, function(item) {
+      return item.time_str === '79'
+    })
+
+    let away45 = _.find(item.trends.dangerous_attacks.away, function(item) {
+      return item.time_str === '65'
+    })
+
+    let away64 = _.find(item.trends.dangerous_attacks.away, function(item) {
+      return item.time_str === '79'
+    })
+
+    if (home45 && home64 && away45 && away64) {
+      homeDangerAttacks = home64.val - home45.val;
+      awayDangerAttacks = away64.val - away45.val;
+
+      let dangerAttacksKef;
+
+      if (homeDangerAttacks > awayDangerAttacks) {
+        dangerAttacksKef = homeDangerAttacks/awayDangerAttacks
+      } else {
+        dangerAttacksKef = awayDangerAttacks/homeDangerAttacks
+      }
+
+      return (dangerAttacksKef >= 1.5)
+
+    } else {
+      return false
+    }
+
+  } else {
+    return false
+  }
+}
+
+function mapTrendAttacks(item) {
+  //return item.view && item.view.stats && item.view.stats.on_target && item.view.stats.attacks && item.view.stats.dangerous_attacks
+  if (item.trends && item.trends.dangerous_attacks) {
+
+    let homeDangerAttacks;
+    let awayDangerAttacks;
+
+    let home45 = _.find(item.trends.dangerous_attacks.home, function(item) {
+      return item.time_str === '65'
+    })
+
+    let home64 = _.find(item.trends.dangerous_attacks.home, function(item) {
+      return item.time_str === '79'
+    })
+
+    let away45 = _.find(item.trends.dangerous_attacks.away, function(item) {
+      return item.time_str === '65'
+    })
+
+    let away64 = _.find(item.trends.dangerous_attacks.away, function(item) {
+      return item.time_str === '79'
+    })
+
+    if (home45 && home64 && away45 && away64) {
+      homeDangerAttacks = home64.val - home45.val;
+      awayDangerAttacks = away64.val - away45.val;
+
+      item.homeDangerAttacks = homeDangerAttacks;
+      item.awayDangerAttacks = awayDangerAttacks;
+
+      return item
+
+    } else {
+      return false
+    }
+
   } else {
     return false
   }
@@ -203,13 +291,13 @@ function currentWinner(item) {
     let dangerAttacksKef = parseInt(item.view.stats.dangerous_attacks[0])/parseInt(item.view.stats.dangerous_attacks[1]);
 
     if (dangerAttacksKef > 1) {
-      if (parseFloat(currentWinnerOdd.home_od) > 1 && parseFloat(currentWinnerOdd.home_od) <= 4) {
+      if (parseFloat(currentWinnerOdd.home_od) > 1.05 && parseFloat(currentWinnerOdd.home_od) <= 4) {
         return true
       } else {
         return false
       }
     } else {
-      if (parseFloat(currentWinnerOdd.away_od) > 1 && parseFloat(currentWinnerOdd.away_od) <= 4) {
+      if (parseFloat(currentWinnerOdd.away_od) > 1.05 && parseFloat(currentWinnerOdd.away_od) <= 4) {
         return true
       } else {
         return false
@@ -300,5 +388,7 @@ export const filterFunctions = {
   halfTimeWinnerOdds: halfTimeWinnerOdds,
   favoriteLoses: favoriteLoses,
   currentTB1stHalf: currentTB1stHalf,
-  goalsDraw: goalsDraw
+  goalsDraw: goalsDraw,
+  trendAttacks: trendAttacks,
+  mapTrendAttacks: mapTrendAttacks
 }

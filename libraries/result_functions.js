@@ -183,8 +183,19 @@ function get1halfDrawClass(item) {
   }
 }
 
+function getDrawClass(item) {
+  if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
+    if (parseInt(item.resultView.scores['2'].home) === parseInt(item.resultView.scores['2'].away)) {
+      return 'plus'
+    } else {
+      return 'minus'
+    }
+  }
+}
+
 function winnerFinalSum() {
   let sum = this.startBank;
+  let startBank = this.startBank;
   let stavka = this.startBank*this.betSize;
   let count = 0;
   let labels = [];
@@ -218,6 +229,60 @@ function winnerFinalSum() {
       } else {
         if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
           sum += (stavka*item.odds['1_1'][0].home_od - stavka)
+        } else {
+          sum -= stavka
+        }
+      }
+
+      count++;
+      dataset.push(sum);
+      labels.push(count);
+    }
+  }.bind(this));
+
+  chartData.datasets[0].data = dataset;
+  chartData.labels = labels;
+  this.chartData = chartData;
+
+  return sum;
+}
+
+function trendsWinnerFinalSum() {
+  let sum = this.startBank;
+  let startBank = this.startBank;
+  let stavka = this.startBank*this.betSize;
+  let count = 0;
+  let labels = [];
+  let dataset = [];
+
+  labels.push(count);
+  dataset.push(sum);
+
+  let chartData = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Размер банка',
+        backgroundColor: '#f87979',
+        data: []
+      }
+    ]
+  }
+
+
+
+  _.forEach(this.$store.state.events, function(item) {
+    if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks
+      && item.odds['1_1'] && item.odds['1_1'][0] && parseFloat(item.odds['1_1'][0].home_od) > 1 ) {
+      if (item.homeDangerAttacks > item.awayDangerAttacks) {
+        if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
+          sum += (stavka*item.odds['1_1'][0].home_od - stavka)
+        } else {
+          sum -= stavka
+        }
+      } else {
+        if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
+          sum += (stavka*item.odds['1_1'][0].away_od - stavka)
         } else {
           sum -= stavka
         }
@@ -489,5 +554,7 @@ export const resultFunctions = {
   get1halfDrawClass: get1halfDrawClass,
   drawPlus: drawPlus,
   drawMinus: drawMinus,
-  drawFinalSum: drawFinalSum
+  drawFinalSum: drawFinalSum,
+  getDrawClass: getDrawClass,
+  trendsWinnerFinalSum: trendsWinnerFinalSum
 }
