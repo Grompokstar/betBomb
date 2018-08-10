@@ -30,7 +30,7 @@ function startTB(item) {
       //let handicap = (startTotalOdd.handicap + '').trim();
       let handicapArray = startTotalOdd.handicap.split(',');
 
-      return startTotalOdd.over_od <= 1.75 && parseFloat(handicapArray[0]) <= 2.5 || startTotalOdd.over_od < 2 && parseFloat(handicapArray[0]) > 2.5
+      return startTotalOdd.over_od <= 1.6 && parseFloat(handicapArray[0]) <= 2.5 || startTotalOdd.over_od < 1.9 && parseFloat(handicapArray[0]) > 2.5
     } else {
       return false
     }
@@ -43,7 +43,7 @@ function startResultOdd(item) {
     let startResultOdd = resultOdds[resultOdds.length - 1];
 
     if (startResultOdd) {
-      if (parseFloat(startResultOdd.home_od) <= 1.45 || parseFloat(startResultOdd.away_od) <= 1.45) {
+      if (parseFloat(startResultOdd.home_od) < 2 || parseFloat(startResultOdd.away_od) < 2) {
         return true
       } else {
         return false
@@ -56,7 +56,7 @@ function startResultOdd(item) {
 
 function leagueName(item) {
   if (item.league && item.league.name) {
-    let leagueNameFilter = ['50', '60', '70', '80','U18', 'U19', 'U20'];
+    let leagueNameFilter = ['50', '60', '70', '80', 'Women', 'U18', 'U19', 'U20'];
 
     return item.league.name.indexOf(leagueNameFilter[0]) === -1
       && item.league.name.indexOf(leagueNameFilter[1]) === -1
@@ -131,7 +131,7 @@ function attacksBot1(item) {
     let attacksSumm = 0;
     attacksSumm = parseInt(item.view.stats.attacks[0]) + parseInt(item.view.stats.attacks[1]);
 
-    let dangerAttacksSumm = 0
+    let dangerAttacksSumm = 0;
     dangerAttacksSumm = parseInt(item.view.stats.dangerous_attacks[0]) + parseInt(item.view.stats.dangerous_attacks[1]);
 
     let dangerAttacksDif = Math.abs(parseInt(item.view.stats.dangerous_attacks[0]) - parseInt(item.view.stats.dangerous_attacks[1]));
@@ -144,7 +144,7 @@ function attacksBot1(item) {
       dangerAttacksKef = parseInt(item.view.stats.dangerous_attacks[1])/parseInt(item.view.stats.dangerous_attacks[0]);
     }
 
-    return dangerAttacksKef >= 2.2 && dangerAttacksDif >= 8 && goalsOnTarget >= 3
+    return dangerAttacksDif >= 10 && goalsOnTarget >= 3
   } else {
     return false
   }
