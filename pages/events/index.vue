@@ -233,9 +233,9 @@
       eventsCount() {
         return this.$store.state.events.length
       },
-      eventsMinusCount: resultFunctions.tb1stHalfMinus,
-      eventsPlusCount: resultFunctions.tb1stHalfPlus,
-      finalSum: resultFunctions.TBFinalSum
+      eventsMinusCount: resultFunctions.winnerMinus,
+      eventsPlusCount: resultFunctions.winnerPlus,
+      finalSum: resultFunctions.winnerFinalSum
     },
 
     methods: {
@@ -254,7 +254,7 @@
         }
       },
 
-      getResult: resultFunctions.getTB1stHalfClass,
+      getResult: resultFunctions.getWinnerClass,
 
       tb1stHalf(item) {
         if (item.odds && item.odds['1_6'] && item.odds['1_6']['0']) {

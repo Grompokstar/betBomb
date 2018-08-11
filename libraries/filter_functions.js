@@ -30,7 +30,7 @@ function startTB(item) {
       //let handicap = (startTotalOdd.handicap + '').trim();
       let handicapArray = startTotalOdd.handicap.split(',');
 
-      return startTotalOdd.over_od <= 1.6 && parseFloat(handicapArray[0]) <= 2.5 || startTotalOdd.over_od < 1.9 && parseFloat(handicapArray[0]) > 2.5
+      return startTotalOdd.over_od <= 1.75 && parseFloat(handicapArray[0]) <= 2.5 || startTotalOdd.over_od < 2 && parseFloat(handicapArray[0]) > 2.5
     } else {
       return false
     }
@@ -200,7 +200,7 @@ function attacks(item) {
       attacksRatioKef = parseInt(item.view.stats.attacks[1])/parseInt(item.view.stats.attacks[0]);
     }*/
 
-    return (advantageTeam === 'away' && oddsKef >= 0.4 && oddsKef <= 1.2 && dangerAttacksDiff > 2 && dangerAttacksKef >= 1.2)
+    return (advantageTeam === 'away' && oddsKef >= 0.45 && oddsKef <= 1.2 && dangerAttacksDiff > 2 && dangerAttacksKef >= 1.2)
   } else {
     return false
   }
