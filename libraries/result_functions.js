@@ -93,7 +93,7 @@ function getTM1stHalfClass(item) {
 function winnerPlus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
-    if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
+    if (item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
       if (parseInt(item.view.stats.dangerous_attacks[0]) < parseInt(item.view.stats.dangerous_attacks[1])) {
         if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
           count ++
@@ -112,7 +112,7 @@ function winnerPlus() {
 function winnerMinus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
-    if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
+    if (item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
       if (parseInt(item.view.stats.dangerous_attacks[0]) < parseInt(item.view.stats.dangerous_attacks[1])) {
         if (parseInt(item.resultView.scores['2'].home) >= parseInt(item.resultView.scores['2'].away)) {
           count ++
@@ -194,7 +194,7 @@ function drawMinus() {
 }
 
 function getWinnerClass(item) {
-  if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
+  if (item && item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
     if (parseInt(item.view.stats.dangerous_attacks[0]) < parseInt(item.view.stats.dangerous_attacks[1])) {
       if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
         return 'plus'
@@ -634,7 +634,7 @@ function TMFinalSum() {
       let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
       let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
       if (finishGoalsSum === startGoalsSum) {
-        sum += (stavka*2 - stavka);
+        sum += (stavka*1.6 - stavka);
       } else {
         sum -= stavka;
       }
