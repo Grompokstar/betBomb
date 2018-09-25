@@ -157,6 +157,7 @@
   import { makeErrorObject, calculatePrice } from '../../libraries/helpers'
   import { resultFunctions } from '../../libraries/result_functions'
   import BetsChart from '~/components/charts/BetsChart'
+  const resultType = 'winner'
 
   export default {
     components: {
@@ -233,12 +234,14 @@
       eventsCount() {
         return this.$store.state.events.length
       },
-      eventsMinusCount: resultFunctions.winnerMinus,
-      eventsPlusCount: resultFunctions.winnerPlus,
-      finalSum: resultFunctions.winnerFinalSum
+      eventsMinusCount: resultFunctions[resultType + 'Minus'],
+      eventsPlusCount: resultFunctions[resultType + 'Plus'],
+      finalSum: resultFunctions[resultType + 'FinalSum']
     },
 
     methods: {
+      getResult: resultFunctions[resultType + 'Class'],
+
       showSearchInput() {
         this.isShowSearchInput = true
       },
@@ -253,8 +256,6 @@
           this.$router.push({path: '/products/' + product.id});
         }
       },
-
-      getResult: resultFunctions.getWinnerClass,
 
       tb1stHalf(item) {
         if (item.odds && item.odds['1_6'] && item.odds['1_6']['0']) {

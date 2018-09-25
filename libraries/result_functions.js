@@ -193,7 +193,7 @@ function drawMinus() {
   return count;
 }
 
-function getWinnerClass(item) {
+function winnerClass(item) {
   if (item && item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
     if (parseInt(item.view.stats.dangerous_attacks[0]) < parseInt(item.view.stats.dangerous_attacks[1])) {
       if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
@@ -646,15 +646,20 @@ function TMFinalSum() {
 }
 
 export const resultFunctions = {
+  winnerPlus: winnerPlus,
+  winnerMinus: winnerMinus,
+  winnerFinalSum: winnerFinalSum,
+  winnerClass: winnerClass,
+
   tb1stHalfMinus: tb1stHalfMinus,
   tb1stHalfPlus: tb1stHalfPlus,
   tm1stHalfMinus: tm1stHalfMinus,
   tm1stHalfPlus: tm1stHalfPlus,
-  winnerPlus: winnerPlus,
-  winnerMinus: winnerMinus,
+
+
   getTB1stHalfClass: getTB1stHalfClass,
-  getWinnerClass: getWinnerClass,
-  winnerFinalSum: winnerFinalSum,
+
+
   TBFinalSum: TBFinalSum,
   TMFinalSum: TMFinalSum,
   getTM1stHalfClass: getTM1stHalfClass,

@@ -118,9 +118,6 @@ export const state = () => ({
     images: []
   },
   tickets: [],
-  zammadUser: {
-    email: ''
-  },
   currentTicket: {
     id: null,
     state_id: 1,
@@ -133,12 +130,12 @@ export const state = () => ({
 export const mutations = {
   setEvents (state, payload) {
     let filterData = payload.data;
-    filterData = _.filter(filterData, filterFunctions.totalGoals);
+    //filterData = _.filter(filterData, filterFunctions.totalGoals);
     //filterData = _.filter(filterData, filterFunctions.startResultOdd);
-    filterData = _.filter(filterData, filterFunctions.attacks);
-    filterData = _.filter(filterData, filterFunctions.startTB);
+    //filterData = _.filter(filterData, filterFunctions.attacks);
+    //filterData = _.filter(filterData, filterFunctions.startTB);
     //filterData = _.filter(filterData, filterFunctions.leagueName);
-    filterData = _.filter(filterData, filterFunctions.currentWinner);
+    //filterData = _.filter(filterData, filterFunctions.currentWinner);
 
     //filterData = _.map(filterData, filterFunctions.mapTrendAttacks);
     //filterData = _.filter(filterData, filterFunctions.currentTB1stHalf);
