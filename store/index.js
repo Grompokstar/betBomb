@@ -296,9 +296,22 @@ export const mutations = {
 
 
 export const actions = {
-  async getEvents () {
+  async getEvents (state, filter) {
+    let filterStr = '';
+    let count = 1;
+
+    for (let key in filter) {
+      if (filter[key]) {
+        if (count === 1) {
+          filterStr += '?' + key + '=' + filter[key];
+        } else {
+          filterStr += '&' + key + '=' + filter[key];
+        }
+        count++;
+      }
+    }
     try {
-      return await axios.get(API_MONGO + '/notes');
+      return await axios.get(API_MONGO + '/notes' + filterStr);
     } catch (error) {
       console.error(error);
       return error;

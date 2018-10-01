@@ -60,7 +60,7 @@ function tm1stHalfPlus() {
   return count;
 }
 
-function getTB1stHalfClass(item) {
+function tb1stHalfClass(item) {
   if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
     let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
     let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
@@ -76,7 +76,7 @@ function getTB1stHalfClass(item) {
 
 
 
-function getTM1stHalfClass(item) {
+function tb1stHalfDrawClass(item) {
   if (item.scores && item.resultView && item.resultView.scores) {
     let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
     let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
@@ -579,7 +579,7 @@ function drawFinalSum() {
   return sum;
 }
 
-function TBFinalSum() {
+function tb1stHalfFinalSum() {
   let sum = this.startBank;
   let stavka = this.startBank*this.betSize;
   let count = 0;
@@ -653,16 +653,10 @@ export const resultFunctions = {
 
   tb1stHalfMinus: tb1stHalfMinus,
   tb1stHalfPlus: tb1stHalfPlus,
-  tm1stHalfMinus: tm1stHalfMinus,
-  tm1stHalfPlus: tm1stHalfPlus,
+  tb1stHalfClass: tb1stHalfClass,
+  tb1stHalfFinalSum: tb1stHalfFinalSum,
 
-
-  getTB1stHalfClass: getTB1stHalfClass,
-
-
-  TBFinalSum: TBFinalSum,
   TMFinalSum: TMFinalSum,
-  getTM1stHalfClass: getTM1stHalfClass,
   _1stHalfWinnerFinalSum: _1stHalfWinnerFinalSum,
   _1stHalfDrawSum: _1stHalfDrawSum,
   get1halfDrawClass: get1halfDrawClass,

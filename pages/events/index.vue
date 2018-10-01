@@ -1,29 +1,61 @@
 <template>
   <v-container>
-    <!--<v-layout>
-      <v-flex class="mml-3">
-        Период тестирования:
-        <b>{{ new Date(parseInt(startPeriod) * 1000).toLocaleString('ru', {day:'numeric', month:'short', year:'numeric'}) }}  -
-        {{ new Date(parseInt(endPeriod) * 1000).toLocaleString('ru', {day:'numeric', month:'short', year:'numeric'}) }}</b>
-      </v-flex>
-    </v-layout>-->
     <v-layout row class="mmt-2">
-      <v-flex xs10 class="dd-flex" align-center justify-start>
-        <!--<div class="display-1 medium mmr-3">События</div>
-        <div class="search-icon d-block" v-if="!isShowSearchInput">
-          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" @click="showSearchInput">
-            <g fill="none" fill-rule="evenodd" stroke="#FF3200" stroke-width="2" transform="matrix(-1 0 0 1 18 1)">
-              <path stroke-linecap="round" d="M13 13l4 4"/>
-              <circle cx="7.5" cy="7.5" r="7.5"/>
-            </g>
-          </svg>
-        </div>
+      <v-flex xs1>
+        Фильтры:
+      </v-flex>
+      <v-flex xs2 class="mmr-3">
+        <v-menu
+                ref="menu"
+                :close-on-content-click="false"
+                v-model="menu"
+                :nudge-right="40"
+                :return-value.sync="dateAt"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px"
+        >
+          <v-text-field
+                  slot="activator"
+                  v-model="dateAt"
+                  label="От"
+                  prepend-icon="event"
+                  readonly
+          ></v-text-field>
+          <v-date-picker v-model="dateAt" @input="$refs.menu.save(dateAt)"></v-date-picker>
+        </v-menu>
+      </v-flex>
 
-        <v-text-field v-if="isShowSearchInput"
-                      v-model="search"
-                      pt-0
-                      class="without-details"
-        ></v-text-field>-->
+      <v-flex xs2>
+        <v-menu
+                ref="menu2"
+                :close-on-content-click="false"
+                v-model="menu2"
+                :nudge-right="40"
+                :return-value.sync="dateTo"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px"
+        >
+          <v-text-field
+                  slot="activator"
+                  v-model="dateTo"
+                  label="До"
+                  prepend-icon="event"
+                  readonly
+          ></v-text-field>
+          <v-date-picker v-model="dateTo" @input="$refs.menu2.save(dateTo)"></v-date-picker>
+        </v-menu>
+      </v-flex>
+
+    </v-layout>
+
+    <v-layout row class="mmt-3">
+      <v-flex xs10 class="dd-flex" align-center justify-start>
         <div class="mml-3 text-xs-center">
           Всего матчей<br> <span class="bold">{{ eventsCount }}</span>
         </div>
@@ -120,10 +152,12 @@
               </span>
             </td>
             <td>
-              <template v-if="props.item.odds['1_1'] && props.item.odds['1_8'] && props.item.odds['1_8']['0']">
+              <template v-if="props.item.odds['1_1'] && props.item.odds['1_1']['0']">
               Исход: {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].home_od }} - {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].away_od }}  =>
               {{ props.item.odds['1_1']['0'].home_od }} - {{ props.item.odds['1_1']['0'].away_od }}<br>
-              Исход 1 тайма: {{ props.item.odds['1_8']['0'].home_od }} - {{ props.item.odds['1_8']['0'].draw_od }} - {{ props.item.odds['1_8']['0'].away_od }}<br>
+              </template>
+              <template v-if="props.item.odds['1_8'] && props.item.odds['1_8']['0']">
+                Исход 1 тайма: {{ props.item.odds['1_8']['0'].home_od }} - {{ props.item.odds['1_8']['0'].draw_od }} - {{ props.item.odds['1_8']['0'].away_od }}<br>
               </template>
               <template>
                 ТБ: {{ tbCommon(props.item) }}<br>
@@ -136,6 +170,7 @@
                 {{ props.item.resultView.scores['2'].home }} - {{ props.item.resultView.scores['2'].away }}
                 ({{ props.item.resultView.scores['1'].home }} - {{ props.item.resultView.scores['1'].away }})
               </div>
+              <div>{{ GoalTimes(props.item.resultView.events) }}</div>
             </td>
           </tr>
         </template>
@@ -157,7 +192,7 @@
   import { makeErrorObject, calculatePrice } from '../../libraries/helpers'
   import { resultFunctions } from '../../libraries/result_functions'
   import BetsChart from '~/components/charts/BetsChart'
-  const resultType = 'winner'
+  const resultType = 'tb1stHalf';
 
   export default {
     components: {
@@ -205,18 +240,23 @@
         startBank: 10000,
         betSize: 0.05,
         chartOptions: {
-          responsive: true
+          responsive: true,
+          lineTension: 0,
         },
         chartData: {
           labels: [],
           datasets: [
             {
               label: 'Размер банка',
-              backgroundColor: '#f87979',
+              backgroundColor: '#1532f8',
               data: []
             }
           ]
-        }
+        },
+        dateAt: '',
+        dateTo: '',
+        menu: false,
+        menu2: false
 
       }
     },
@@ -277,7 +317,12 @@
 
       refreshList() {
         this.isLoadingProducts = true;
-        this.$store.dispatch('getEvents').then(response => {
+
+        let filter = {
+          date_at: this.dateAt,
+          date_to: this.dateTo
+        }
+        this.$store.dispatch('getEvents', filter).then(response => {
           this.isLoadingProducts = false;
           if (response.status === 200) {
             this.$store.commit('setEvents', response)
@@ -285,6 +330,23 @@
             this.$toast.error(makeErrorObject(response))
           }
         });
+      },
+
+      GoalTimes(events) {
+        let goalEvents = [];
+        let goalTimes = [];
+
+        _.forEach(events, function(event) {
+          if (event.text.indexOf(' Goal ') >=0 ) {
+            goalEvents.push(event.text)
+          };
+        });
+
+        _.forEach(goalEvents, function(event) {
+          goalTimes.push(event.substring(0, event.indexOf('\'')));
+        })
+
+        return goalTimes;
       }
     }
 
