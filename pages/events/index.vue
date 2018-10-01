@@ -91,6 +91,13 @@
         <div class="mml-2 text-xs-center">
           Профитность оборота ставок<br> <span class="bold">{{ ((finalSum.toFixed(0)-startBank)/((eventsPlusCount + eventsMinusCount)*(startBank*betSize)) * 100).toFixed(2) }} %</span>
         </div>
+
+        <div class="mml-2 text-xs-center">
+          Гол до 60 м.<br> <span class="bold green--text">{{ _60MinutePlusCount }}</span>
+        </div>
+        <div class="mml-2 text-xs-center">
+          Гол до 60 м.<br> <span class="bold">{{(_60MinutePlusCount/eventsMinusCount*100).toFixed(2) }} %</span>
+        </div>
       </v-flex>
       <v-spacer></v-spacer>
       <v-flex class="text-xs-right">
@@ -170,7 +177,7 @@
                 {{ props.item.resultView.scores['2'].home }} - {{ props.item.resultView.scores['2'].away }}
                 ({{ props.item.resultView.scores['1'].home }} - {{ props.item.resultView.scores['1'].away }})
               </div>
-              <div>{{ GoalTimes(props.item.resultView.events) }}</div>
+              <div v-if="props.item.resultView && props.item.resultView.events" >{{ GoalTimes(props.item.resultView.events) }}</div>
             </td>
           </tr>
         </template>
@@ -276,7 +283,8 @@
       },
       eventsMinusCount: resultFunctions[resultType + 'Minus'],
       eventsPlusCount: resultFunctions[resultType + 'Plus'],
-      finalSum: resultFunctions[resultType + 'FinalSum']
+      finalSum: resultFunctions[resultType + 'FinalSum'],
+      _60MinutePlusCount: resultFunctions._60minutePlusCount
     },
 
     methods: {
@@ -333,20 +341,25 @@
       },
 
       GoalTimes(events) {
-        let goalEvents = [];
-        let goalTimes = [];
+        if (events) {
+          let goalEvents = [];
+          let goalTimes = [];
 
-        _.forEach(events, function(event) {
-          if (event.text.indexOf(' Goal ') >=0 ) {
-            goalEvents.push(event.text)
-          };
-        });
+          _.forEach(events, function(event) {
+            if (event.text && event.text.indexOf(' Goal ') >=0 ) {
+              goalEvents.push(event.text)
+            };
+          });
 
-        _.forEach(goalEvents, function(event) {
-          goalTimes.push(event.substring(0, event.indexOf('\'')));
-        })
+          _.forEach(goalEvents, function(event) {
+            goalTimes.push(event.substring(0, event.indexOf('\'')));
+          })
 
-        return goalTimes;
+          return goalTimes;
+        } else {
+          return '-'
+        }
+
       }
     }
 

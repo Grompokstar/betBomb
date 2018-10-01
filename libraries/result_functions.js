@@ -128,6 +128,58 @@ function winnerMinus() {
   return count;
 }
 
+function _60minutePlusCount() {
+  let count = 0;
+  function goalTimes(events) {
+    if (events) {
+      let goalEvents = [];
+      let goalTimes = [];
+
+      _.forEach(events, function(event) {
+        if (event.text && event.text.indexOf(' Goal ') >=0 ) {
+          goalEvents.push(event.text)
+        };
+      });
+
+      _.forEach(goalEvents, function(event) {
+        goalTimes.push(event.substring(0, event.indexOf('\'')));
+      })
+
+      return goalTimes;
+    } else {
+      return '-'
+    }
+
+  }
+
+
+
+  _.forEach(this.$store.state.events, function (item) {
+    if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
+      let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
+      let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
+      if (finishGoalsSum <= startGoalsSum) {
+        if (item.resultView && item.resultView.events) {
+          let timesArray = goalTimes(item.resultView.events);
+          let isInterval = false;
+          _.forEach(timesArray, function (minute) {
+            let minuteNumber = parseInt(minute.slice(0, 2))
+            if (minuteNumber >= 46 && minuteNumber <= 59) {
+              isInterval = true
+            }
+          })
+
+          if (isInterval) {
+            count++
+          }
+        }
+      }
+    }
+  })
+
+  return count;
+}
+
 function halfTimeWinnerPlus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
@@ -650,6 +702,7 @@ export const resultFunctions = {
   winnerMinus: winnerMinus,
   winnerFinalSum: winnerFinalSum,
   winnerClass: winnerClass,
+  _60minutePlusCount: _60minutePlusCount,
 
   tb1stHalfMinus: tb1stHalfMinus,
   tb1stHalfPlus: tb1stHalfPlus,
