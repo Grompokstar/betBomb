@@ -702,8 +702,8 @@ export const resultFunctions = {
   winnerMinus: winnerMinus,
   winnerFinalSum: winnerFinalSum,
   winnerClass: winnerClass,
-  _60minutePlusCount: _60minutePlusCount,
 
+  _60minutePlusCount: _60minutePlusCount,
   tb1stHalfMinus: tb1stHalfMinus,
   tb1stHalfPlus: tb1stHalfPlus,
   tb1stHalfClass: tb1stHalfClass,
