@@ -68,6 +68,9 @@
         <div class="mml-2 text-xs-center">
           Минусов<br> <span class="bold red--text">{{ eventsMinusCount }}</span>
         </div>
+        <div class="mml-2 text-xs-center">
+          Возвратов<br> <span class="bold">{{ eventsReturnCount }}</span>
+        </div>
 
         <div class="mml-2 text-xs-center">
           Процент прохода<br> <span class="bold">{{ (eventsPlusCount/(eventsPlusCount+eventsMinusCount)*100).toFixed(2) }} %</span>
@@ -92,12 +95,12 @@
           Профитность оборота ставок<br> <span class="bold">{{ ((finalSum.toFixed(0)-startBank)/((eventsPlusCount + eventsMinusCount)*(startBank*betSize)) * 100).toFixed(2) }} %</span>
         </div>
 
-        <div class="mml-2 text-xs-center">
-          Гол до 60 м.<br> <span class="bold green--text">{{ _60MinutePlusCount }}</span>
+        <!--<div class="mml-2 text-xs-center">
+          Гол до 60 м.<br> <span class="bold green&#45;&#45;text">{{ _60MinutePlusCount }}</span>
         </div>
         <div class="mml-2 text-xs-center">
           Гол до 60 м.<br> <span class="bold">{{(_60MinutePlusCount/eventsMinusCount*100).toFixed(2) }} %</span>
-        </div>
+        </div>-->
       </v-flex>
       <v-spacer></v-spacer>
       <v-flex class="text-xs-right">
@@ -283,6 +286,7 @@
       },
       eventsMinusCount: resultFunctions[resultType + 'Minus'],
       eventsPlusCount: resultFunctions[resultType + 'Plus'],
+      eventsReturnCount: resultFunctions[resultType + 'Return'],
       finalSum: resultFunctions[resultType + 'FinalSum'],
       _60MinutePlusCount: resultFunctions._60minutePlusCount
     },

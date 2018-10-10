@@ -6,8 +6,24 @@ function tb1stHalfMinus() {
     if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
       let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
       let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
-      if (finishGoalsSum <= startGoalsSum) {
-        count++
+      let timesArray = goalTimes(item.resultView.events);
+
+      let isInterval = false;
+      _.forEach(timesArray, function (minute) {
+        let minuteNumber = parseInt(minute.slice(0, 2))
+        if (minuteNumber >= 21 && minuteNumber <= 25) {
+          isInterval = true
+        }
+      })
+
+      if (isInterval) {
+        if (finishGoalsSum - startGoalsSum < 2) {
+          count++
+        }
+      } else {
+        if (finishGoalsSum - startGoalsSum <= 0) {
+          count++
+        }
       }
     }
   })
@@ -21,11 +37,53 @@ function tb1stHalfPlus() {
     if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
       let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
       let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
-      if (finishGoalsSum > startGoalsSum) {
-        count++
+      let timesArray = goalTimes(item.resultView.events);
+
+      if (finishGoalsSum - startGoalsSum >= 1) {
+
+        let isInterval = false;
+        _.forEach(timesArray, function (minute) {
+          let minuteNumber = parseInt(minute.slice(0, 2))
+          if (minuteNumber >= 21 && minuteNumber <= 25) {
+            isInterval = true
+          }
+        })
+
+        if (isInterval) {
+          if (finishGoalsSum - startGoalsSum >= 2) {
+            count++
+          }
+        } else {
+          count++
+        }
+
       }
     }
   })
+
+  return count;
+}
+
+function tb1stHalfReturn() {
+  let count = 0;
+
+  /*_.forEach(this.$store.state.events, function (item) {
+    if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
+      let timesArray = goalTimes(item.resultView.events);
+
+      let isInterval = false;
+      _.forEach(timesArray, function (minute) {
+        let minuteNumber = parseInt(minute.slice(0, 2));
+        if (minuteNumber >= 21 && minuteNumber <= 25) {
+          isInterval = true
+        }
+      })
+
+      if (isInterval) {
+        count++;
+      }
+    }
+  })*/
 
   return count;
 }
@@ -64,7 +122,18 @@ function tb1stHalfClass(item) {
   if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
     let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
     let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
-    if (finishGoalsSum <= startGoalsSum) {
+    let timesArray = goalTimes(item.resultView.events);
+    let isInterval = false;
+    _.forEach(timesArray, function (minute) {
+      let minuteNumber = parseInt(minute.slice(0, 2))
+      if (minuteNumber >= 21 && minuteNumber <= 25) {
+        isInterval = true
+      }
+    })
+
+    if (finishGoalsSum - startGoalsSum <= 0) {
+      return 'minus'
+    } else if (isInterval && (finishGoalsSum - startGoalsSum < 2)) {
       return 'minus'
     } else {
       return 'plus'
@@ -631,6 +700,27 @@ function drawFinalSum() {
   return sum;
 }
 
+function goalTimes(events) {
+  if (events) {
+    let goalEvents = [];
+    let goalTimes = [];
+
+    _.forEach(events, function(event) {
+      if (event.text && event.text.indexOf(' Goal ') >=0 ) {
+        goalEvents.push(event.text)
+      };
+    });
+
+    _.forEach(goalEvents, function(event) {
+      goalTimes.push(event.substring(0, event.indexOf('\'')));
+    })
+
+    return goalTimes;
+  } else {
+    return '-'
+  }
+}
+
 function tb1stHalfFinalSum() {
   let sum = this.startBank;
   let stavka = this.startBank*this.betSize;
@@ -656,8 +746,25 @@ function tb1stHalfFinalSum() {
     if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1'] && item.scores['2']) {
       let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
       let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
-      if (finishGoalsSum > startGoalsSum) {
-        sum += (stavka*1.5 - stavka);
+      let timesArray = goalTimes(item.resultView.events);
+      if (finishGoalsSum - startGoalsSum >= 1) {
+        let isInterval = false;
+        _.forEach(timesArray, function (minute) {
+          let minuteNumber = parseInt(minute.slice(0, 2))
+          if (minuteNumber >= 21 && minuteNumber <= 25) {
+            isInterval = true
+          }
+        })
+
+        if (isInterval) {
+          if (finishGoalsSum - startGoalsSum >= 2) {
+            sum += (stavka*1.5 - stavka);
+          } else {
+            sum -= stavka;
+          }
+        } else {
+          sum += (stavka*1.5 - stavka);
+        }
       } else {
         sum -= stavka;
       }
@@ -706,6 +813,7 @@ export const resultFunctions = {
   _60minutePlusCount: _60minutePlusCount,
   tb1stHalfMinus: tb1stHalfMinus,
   tb1stHalfPlus: tb1stHalfPlus,
+  tb1stHalfReturn: tb1stHalfReturn,
   tb1stHalfClass: tb1stHalfClass,
   tb1stHalfFinalSum: tb1stHalfFinalSum,
 
