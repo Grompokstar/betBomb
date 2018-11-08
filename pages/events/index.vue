@@ -68,9 +68,6 @@
         <div class="mml-2 text-xs-center">
           Минусов<br> <span class="bold red--text">{{ eventsMinusCount }}</span>
         </div>
-        <div class="mml-2 text-xs-center">
-          Возвратов<br> <span class="bold">{{ eventsReturnCount }}</span>
-        </div>
 
         <div class="mml-2 text-xs-center">
           Процент прохода<br> <span class="bold">{{ (eventsPlusCount/(eventsPlusCount+eventsMinusCount)*100).toFixed(2) }} %</span>
@@ -202,7 +199,7 @@
   import { makeErrorObject, calculatePrice } from '../../libraries/helpers'
   import { resultFunctions } from '../../libraries/result_functions'
   import BetsChart from '~/components/charts/BetsChart'
-  const resultType = 'tb1stHalf';
+  const resultType = 'winner';
 
   export default {
     components: {
@@ -248,7 +245,7 @@
         deletingProduct: null,
         haveProcessingProducts: false,
         startBank: 10000,
-        betSize: 0.05,
+        betSize: 0.1,
         chartOptions: {
           responsive: true,
           lineTension: 0,
@@ -286,7 +283,6 @@
       },
       eventsMinusCount: resultFunctions[resultType + 'Minus'],
       eventsPlusCount: resultFunctions[resultType + 'Plus'],
-      eventsReturnCount: resultFunctions[resultType + 'Return'],
       finalSum: resultFunctions[resultType + 'FinalSum'],
       _60MinutePlusCount: resultFunctions._60minutePlusCount
     },
