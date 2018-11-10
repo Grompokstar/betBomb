@@ -11,7 +11,7 @@ function tb1stHalfMinus() {
       let isInterval = false;
       _.forEach(timesArray, function (minute) {
         let minuteNumber = parseInt(minute.slice(0, 2))
-        if (minuteNumber >= 21 && minuteNumber <= 25) {
+        if (minuteNumber >= 22 && minuteNumber <= 25) {
           isInterval = true
         }
       })
@@ -44,7 +44,8 @@ function tb1stHalfPlus() {
         let isInterval = false;
         _.forEach(timesArray, function (minute) {
           let minuteNumber = parseInt(minute.slice(0, 2))
-          if (minuteNumber >= 21 && minuteNumber <= 25) {
+
+          if (minuteNumber >= 22 && minuteNumber <= 25) {
             isInterval = true
           }
         })
@@ -126,7 +127,7 @@ function tb1stHalfClass(item) {
     let isInterval = false;
     _.forEach(timesArray, function (minute) {
       let minuteNumber = parseInt(minute.slice(0, 2))
-      if (minuteNumber >= 21 && minuteNumber <= 25) {
+      if (minuteNumber >= 22 && minuteNumber <= 25) {
         isInterval = true
       }
     })
@@ -227,9 +228,17 @@ function _60minutePlusCount() {
     if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
       let startGoalsSum = parseInt(item.scores['2'].home) + parseInt(item.scores['2'].away);
       let finishGoalsSum = parseInt(item.resultView.scores['1'].home) + parseInt(item.resultView.scores['1'].away);
-      if (finishGoalsSum <= startGoalsSum) {
-        if (item.resultView && item.resultView.events) {
-          let timesArray = goalTimes(item.resultView.events);
+      if (item.resultView && item.resultView.events) {
+        let isIntervalNoGoal = false;
+        let timesArray = goalTimes(item.resultView.events);
+        _.forEach(timesArray, function (minute) {
+          let minuteNumber = parseInt(minute.slice(0, 2))
+          if (minuteNumber >= 26 && minuteNumber <= 45) {
+            isIntervalNoGoal = true
+          }
+        })
+
+        if (finishGoalsSum <= startGoalsSum || !isIntervalNoGoal) {
           let isInterval = false;
           _.forEach(timesArray, function (minute) {
             let minuteNumber = parseInt(minute.slice(0, 2))
@@ -243,6 +252,7 @@ function _60minutePlusCount() {
           }
         }
       }
+
     }
   })
 
@@ -751,7 +761,7 @@ function tb1stHalfFinalSum() {
         let isInterval = false;
         _.forEach(timesArray, function (minute) {
           let minuteNumber = parseInt(minute.slice(0, 2))
-          if (minuteNumber >= 21 && minuteNumber <= 25) {
+          if (minuteNumber >= 22 && minuteNumber <= 25) {
             isInterval = true
           }
         })
