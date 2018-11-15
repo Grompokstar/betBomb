@@ -92,12 +92,12 @@
           Профитность оборота ставок<br> <span class="bold">{{ ((finalSum.toFixed(0)-startBank)/((eventsPlusCount + eventsMinusCount)*(startBank*betSize)) * 100).toFixed(2) }} %</span>
         </div>
 
-        <div class="mml-2 text-xs-center">
-          Гол до 60 м.<br> <span class="bold green--text">{{ _60MinutePlusCount }}</span>
+        <!--<div class="mml-2 text-xs-center">
+          Гол до 60 м.<br> <span class="bold green&#45;&#45;text">{{ _60MinutePlusCount }}</span>
         </div>
         <div class="mml-2 text-xs-center">
           Гол до 60 м.<br> <span class="bold">{{(_60MinutePlusCount/eventsMinusCount*100).toFixed(2) }} %</span>
-        </div>
+        </div>-->
       </v-flex>
       <v-spacer></v-spacer>
       <v-flex class="text-xs-right">
@@ -199,7 +199,7 @@
   import { makeErrorObject, calculatePrice } from '../../libraries/helpers'
   import { resultFunctions } from '../../libraries/result_functions'
   import BetsChart from '~/components/charts/BetsChart'
-  const resultType = 'tb1stHalf';
+  const resultType = 'winner';
 
   export default {
     components: {
@@ -245,7 +245,7 @@
         deletingProduct: null,
         haveProcessingProducts: false,
         startBank: 10000,
-        betSize: 0.1,
+        betSize: 0.05,
         chartOptions: {
           responsive: true,
           lineTension: 0,
@@ -284,7 +284,7 @@
       eventsMinusCount: resultFunctions[resultType + 'Minus'],
       eventsPlusCount: resultFunctions[resultType + 'Plus'],
       finalSum: resultFunctions[resultType + 'FinalSum'],
-      _60MinutePlusCount: resultFunctions._60minutePlusCount
+      //_60MinutePlusCount: resultFunctions._60minutePlusCount
     },
 
     methods: {

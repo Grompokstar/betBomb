@@ -164,14 +164,8 @@ function winnerPlus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
     if (item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
-      if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
-        if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
-          count ++
-        }
-      } else {
-        if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
-          count ++
-        }
+      if (parseInt(item.resultView.scores['2'].away) > parseInt(item.resultView.scores['2'].home)) {
+        count ++
       }
     }
   })
@@ -183,14 +177,8 @@ function winnerMinus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
     if (item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
-      if (parseInt(item.view.stats.dangerous_attacks[0]) > parseInt(item.view.stats.dangerous_attacks[1])) {
-        if (parseInt(item.resultView.scores['2'].home) <= parseInt(item.resultView.scores['2'].away)) {
-          count ++
-        }
-      } else {
-        if (parseInt(item.resultView.scores['2'].home) >= parseInt(item.resultView.scores['2'].away)) {
-          count ++
-        }
+      if (parseInt(item.resultView.scores['2'].away) <= parseInt(item.resultView.scores['2'].home)) {
+        count ++
       }
     }
   })
@@ -406,19 +394,11 @@ function winnerFinalSum() {
 
   _.forEach(this.$store.state.events, function(item) {
     if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks
-      && item.odds['1_1'] && item.odds['1_1'][0] && parseFloat(item.odds['1_1'][0].home_od) > 1 ) {
-      if (parseInt(item.view.stats.dangerous_attacks[0]) < parseInt(item.view.stats.dangerous_attacks[1])) {
-        if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
-          sum += (stavka*item.odds['1_1'][0].away_od - stavka)
-        } else {
-          sum -= stavka
-        }
+      && item.odds['1_1'] && item.odds['1_1'][0] && parseFloat(item.odds['1_1'][0].away_od) > 1 ) {
+      if (parseInt(item.resultView.scores['2'].away) > parseInt(item.resultView.scores['2'].home)) {
+        sum += (stavka*item.odds['1_1'][0].away_od - stavka)
       } else {
-        if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
-          sum += (stavka*item.odds['1_1'][0].home_od - stavka)
-        } else {
-          sum -= stavka
-        }
+        sum -= stavka
       }
 
       count++;
@@ -768,12 +748,12 @@ function tb1stHalfFinalSum() {
 
         if (isInterval) {
           if (finishGoalsSum - startGoalsSum >= 2) {
-            sum += (stavka*1.5 - stavka);
+            sum += (stavka*1.65 - stavka);
           } else {
             sum -= stavka;
           }
         } else {
-          sum += (stavka*1.5 - stavka);
+          sum += (stavka*1.65 - stavka);
         }
       } else {
         sum -= stavka;
