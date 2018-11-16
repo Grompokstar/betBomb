@@ -395,6 +395,16 @@ function winnerFinalSum() {
   _.forEach(this.$store.state.events, function(item) {
     if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks
       && item.odds['1_1'] && item.odds['1_1'][0] && parseFloat(item.odds['1_1'][0].away_od) > 1 ) {
+
+      //stavka = dataset[dataset.length - 1]/30
+
+      if (dataset[dataset.length - 1]/stavka >= 60 && stavka < 2000) {
+        stavka = stavka * 2
+        console.log(stavka)
+      } else if (dataset[dataset.length - 1]/stavka < 15) {
+        stavka = stavka/2
+        console.log(stavka)
+      }
       if (parseInt(item.resultView.scores['2'].away) > parseInt(item.resultView.scores['2'].home)) {
         sum += (stavka*item.odds['1_1'][0].away_od - stavka)
       } else {
