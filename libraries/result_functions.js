@@ -164,7 +164,7 @@ function winnerPlus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
     if (item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
-      if (parseInt(item.resultView.scores['2'].away) > parseInt(item.resultView.scores['2'].home)) {
+      if (parseInt(item.resultView.scores['2'].away) < parseInt(item.resultView.scores['2'].home)) {
         count ++
       }
     }
@@ -177,7 +177,7 @@ function winnerMinus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
     if (item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
-      if (parseInt(item.resultView.scores['2'].away) <= parseInt(item.resultView.scores['2'].home)) {
+      if (parseInt(item.resultView.scores['2'].away) >= parseInt(item.resultView.scores['2'].home)) {
         count ++
       }
     }
@@ -314,19 +314,11 @@ function drawMinus() {
 
 function winnerClass(item) {
   if (item && item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
-    if (parseInt(item.view.stats.dangerous_attacks[0]) < parseInt(item.view.stats.dangerous_attacks[1])) {
-      if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
-        return 'plus'
-      } else {
-        return 'minus'
-      }
-    } else {
       if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
         return 'plus'
       } else {
         return 'minus'
       }
-    }
   }
 }
 
@@ -405,8 +397,8 @@ function winnerFinalSum() {
         stavka = stavka/2
         console.log(stavka)
       }*/
-      if (parseInt(item.resultView.scores['2'].away) > parseInt(item.resultView.scores['2'].home)) {
-        sum += (stavka*item.odds['1_1'][0].away_od - stavka)
+      if (parseInt(item.resultView.scores['2'].away) < parseInt(item.resultView.scores['2'].home)) {
+        sum += (stavka*item.odds['1_1'][0].home_od - stavka)
       } else {
         sum -= stavka
       }
