@@ -244,7 +244,7 @@
         confirmDeleteProductDialog: false,
         deletingProduct: null,
         haveProcessingProducts: false,
-        startBank: 9000,
+        startBank: 15000,
         betSize: 1/30,
         chartOptions: {
           responsive: true,
