@@ -289,8 +289,8 @@ function halfTimeWinnerMinus() {
 function drawPlus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
-    if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
-      if (parseInt(item.resultView.scores['1'].home) === parseInt(item.resultView.scores['1'].away)) {
+    if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['2']) {
+      if (parseInt(item.resultView.scores['2'].home) === parseInt(item.resultView.scores['2'].away)) {
         count ++
       }
     }
@@ -302,8 +302,8 @@ function drawPlus() {
 function drawMinus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
-    if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['1']) {
-      if (parseInt(item.resultView.scores['1'].home) !== parseInt(item.resultView.scores['1'].away)) {
+    if (item.scores && item.resultView && item.resultView.scores && item.resultView.scores['2']) {
+      if (parseInt(item.resultView.scores['2'].home) !== parseInt(item.resultView.scores['2'].away)) {
         count ++
       }
     }
@@ -358,9 +358,9 @@ function get1halfDrawClass(item) {
   }
 }
 
-function getDrawClass(item) {
+function drawClass(item) {
   if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
-    if (parseInt(item.resultView.scores['1'].home) === parseInt(item.resultView.scores['1'].away)) {
+    if (parseInt(item.resultView.scores['2'].home) === parseInt(item.resultView.scores['2'].away)) {
       return 'plus'
     } else {
       return 'minus'
@@ -681,7 +681,7 @@ function drawFinalSum() {
   _.forEach(this.$store.state.events, function(item) {
     if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks
       && item.odds['1_1'] && item.odds['1_1'][0] && parseFloat(item.odds['1_1'][0].home_od) > 1 ) {
-      if (parseInt(item.resultView.scores['1'].home) === parseInt(item.resultView.scores['1'].away)) {
+      if (parseInt(item.resultView.scores['2'].home) === parseInt(item.resultView.scores['2'].away)) {
         sum += (stavka*item.odds['1_1'][0].draw_od - stavka)
       } else {
         sum -= stavka
@@ -821,10 +821,12 @@ export const resultFunctions = {
   _1stHalfWinnerFinalSum: _1stHalfWinnerFinalSum,
   _1stHalfDrawSum: _1stHalfDrawSum,
   get1halfDrawClass: get1halfDrawClass,
+
   drawPlus: drawPlus,
   drawMinus: drawMinus,
   drawFinalSum: drawFinalSum,
-  getDrawClass: getDrawClass,
+  drawClass: drawClass,
+
   trendsWinnerFinalSum: trendsWinnerFinalSum,
   getHalfTimeWinnerClass: getHalfTimeWinnerClass,
   halfTimeWinnerFinalSum: halfTimeWinnerFinalSum,

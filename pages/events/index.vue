@@ -161,7 +161,7 @@
             <td>
               <template v-if="props.item.odds['1_1'] && props.item.odds['1_1']['0']">
               Исход: {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].home_od }} - {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].away_od }}  =>
-              {{ props.item.odds['1_1']['0'].home_od }} - {{ props.item.odds['1_1']['0'].away_od }}<br>
+              {{ props.item.odds['1_1']['0'].home_od }} - {{ props.item.odds['1_1']['0'].draw_od }} - {{ props.item.odds['1_1']['0'].away_od }}<br>
               </template>
               <template v-if="props.item.odds['1_8'] && props.item.odds['1_8']['0']">
                 Исход 1 тайма: {{ props.item.odds['1_8']['0'].home_od }} - {{ props.item.odds['1_8']['0'].draw_od }} - {{ props.item.odds['1_8']['0'].away_od }}<br>
@@ -199,7 +199,7 @@
   import { makeErrorObject, calculatePrice } from '../../libraries/helpers'
   import { resultFunctions } from '../../libraries/result_functions'
   import BetsChart from '~/components/charts/BetsChart'
-  const resultType = 'winner';
+  const resultType = 'draw';
 
   export default {
     components: {
