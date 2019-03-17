@@ -240,11 +240,11 @@
           processing: this.$t('productStatuses.processing'),
           failed: this.$t('productStatuses.failed'),
         },
-        rowPerPageItems: [5, 10, 25, 50, {"text": this.$t('tablesCommon.pagination.all'), "value": -1}],
+        rowPerPageItems: [5, 10, 25, 50, 100, 500, 1000, {"text": this.$t('tablesCommon.pagination.all'), "value": -1}],
         confirmDeleteProductDialog: false,
         deletingProduct: null,
         haveProcessingProducts: false,
-        startBank: 30000,
+        startBank: 15000,
         betSize: 1/30,
         chartOptions: {
           responsive: true,
