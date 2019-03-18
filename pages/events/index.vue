@@ -159,9 +159,9 @@
               </span>
             </td>
             <td>
-              <template v-if="props.item.odds['1_1'] && props.item.odds['1_1']['0']">
-              Исход: {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].home_od }} - {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].away_od }}  =>
-              {{ props.item.odds['1_1']['0'].home_od }} - {{ props.item.odds['1_1']['0'].away_od }}<br>
+              <template v-if="props.item.odds.currentResultOdd">
+              Исход: {{ props.item.odds.startResultOdd.home_od }} - {{ props.item.odds.startResultOdd.away_od }}  =>
+              {{ props.item.odds.currentResultOdd.home_od }} - {{ props.item.odds.currentResultOdd.away_od }}<br>
               </template>
               <template v-if="props.item.odds['1_8'] && props.item.odds['1_8']['0']">
                 Исход 1 тайма: {{ props.item.odds['1_8']['0'].home_od }} - {{ props.item.odds['1_8']['0'].draw_od }} - {{ props.item.odds['1_8']['0'].away_od }}<br>
@@ -318,8 +318,8 @@
       },
 
       tbCommon(item) {
-        if (item.odds && item.odds['1_3'] && item.odds['1_3'].length >= 1) {
-          return item.odds['1_3'][item.odds['1_3'].length - 1].over_od + '/' + item.odds['1_3'][item.odds['1_3'].length - 1].handicap
+        if (item.odds && item.odds.startTbOdd) {
+          return item.odds.startTbOdd.over_od + '/' + item.odds.startTbOdd.handicap
         }
       },
 
