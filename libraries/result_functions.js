@@ -163,7 +163,7 @@ function tb1stHalfDrawClass(item) {
 function winnerPlus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
-    if (item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
+    if (item.resultView && item.resultView.scores) {
       if (parseInt(item.resultView.scores['2'].away) > parseInt(item.resultView.scores['2'].home)) {
         count ++
       }
@@ -176,7 +176,7 @@ function winnerPlus() {
 function winnerMinus() {
   let count = 0;
   _.forEach(this.$store.state.events, function (item) {
-    if (item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks) {
+    if (item.resultView && item.resultView.scores) {
       if (parseInt(item.resultView.scores['2'].away) <= parseInt(item.resultView.scores['2'].home)) {
         count ++
       }
@@ -394,19 +394,10 @@ function winnerFinalSum() {
 
   _.forEach(this.$store.state.events, function(item) {
     if (item.scores && item.resultView && item.resultView.scores && item.view.stats.dangerous_attacks
-      && item.odds['1_1'] && item.odds['1_1'][0] && parseFloat(item.odds['1_1'][0].away_od) > 1 ) {
+      && item.odds.currentResultOdd && parseFloat(item.odds.currentResultOdd.away_od) > 1 ) {
 
-      //stavka = dataset[dataset.length - 1]/30
-
-      /*if (dataset[dataset.length - 1]/stavka >= 60 && stavka < 2000) {
-        stavka = stavka * 2
-        console.log(stavka)
-      } else if (dataset[dataset.length - 1]/stavka < 15) {
-        stavka = stavka/2
-        console.log(stavka)
-      }*/
       if (parseInt(item.resultView.scores['2'].away) > parseInt(item.resultView.scores['2'].home)) {
-        sum += (stavka*item.odds['1_1'][0].away_od - stavka)
+        sum += (stavka * parseFloat(item.odds.currentResultOdd.away_od) - stavka)
       } else {
         sum -= stavka
       }

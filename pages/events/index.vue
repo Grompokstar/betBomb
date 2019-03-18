@@ -159,9 +159,9 @@
               </span>
             </td>
             <td>
-              <template v-if="props.item.odds['1_1'] && props.item.odds['1_1']['0']">
-              Исход: {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].home_od }} - {{ props.item.odds['1_1'][props.item.odds['1_1'].length - 1].away_od }}  =>
-              {{ props.item.odds['1_1']['0'].home_od }} - {{ props.item.odds['1_1']['0'].away_od }}<br>
+              <template v-if="props.item.odds.currentResultOdd && props.item.odds.startResultOdd">
+              Исход: {{ props.item.odds.startResultOdd.home_od }} - {{ props.item.odds.startResultOdd.away_od }}  =>
+              {{ props.item.odds.currentResultOdd.home_od }} - {{ props.item.odds.currentResultOdd.away_od }}<br>
               </template>
               <template v-if="props.item.odds['1_8'] && props.item.odds['1_8']['0']">
                 Исход 1 тайма: {{ props.item.odds['1_8']['0'].home_od }} - {{ props.item.odds['1_8']['0'].draw_od }} - {{ props.item.odds['1_8']['0'].away_od }}<br>
@@ -173,9 +173,8 @@
               </template>
             </td>
             <td>
-              <div v-if="props.item.resultView && props.item.resultView.scores && props.item.resultView.scores['1']" class="bold">
+              <div v-if="props.item.resultView && props.item.resultView.scores && props.item.resultView.scores['2']" class="bold">
                 {{ props.item.resultView.scores['2'].home }} - {{ props.item.resultView.scores['2'].away }}
-                ({{ props.item.resultView.scores['1'].home }} - {{ props.item.resultView.scores['1'].away }})
               </div>
               <div v-if="props.item.resultView && props.item.resultView.events" >{{ GoalTimes(props.item.resultView.events) }}</div>
             </td>
