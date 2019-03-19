@@ -249,7 +249,7 @@
         deletingProduct: null,
         haveProcessingProducts: false,
         startBank: 15000,
-        betSize: 1/15,
+        betSize: 1/30,
         chartOptions: {
           responsive: true,
           lineTension: 0,
