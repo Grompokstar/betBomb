@@ -91,6 +91,10 @@
         <div class="mml-2 text-xs-center">
           Профитность оборота ставок<br> <span class="bold">{{ ((finalSum.toFixed(0)-startBank)/((eventsPlusCount + eventsMinusCount)*(startBank*betSize)) * 100).toFixed(2) }} %</span>
         </div>
+  
+        <div class="mml-2 text-xs-center">
+          Максимальная просадка<br> <span class="bold">{{ maxSlump }} %</span>
+        </div>
 
         <!--<div class="mml-2 text-xs-center">
           Гол до 60 м.<br> <span class="bold green&#45;&#45;text">{{ _60MinutePlusCount }}</span>
@@ -160,8 +164,8 @@
             </td>
             <td>
               <template v-if="props.item.odds.currentResultOdd && props.item.odds.startResultOdd">
-              Исход: {{ props.item.odds.startResultOdd.home_od }} - {{ props.item.odds.startResultOdd.away_od }}  =>
-              {{ props.item.odds.currentResultOdd.home_od }} - {{ props.item.odds.currentResultOdd.away_od }}<br>
+              Исход: {{ props.item.odds.startResultOdd.home_od }} - {{ props.item.odds.startResultOdd.draw_od }} - {{ props.item.odds.startResultOdd.away_od }}  =>
+              {{ props.item.odds.currentResultOdd.home_od }} - {{ props.item.odds.currentResultOdd.draw_od }} - {{ props.item.odds.currentResultOdd.away_od }}<br>
               </template>
               <template v-if="props.item.odds['1_8'] && props.item.odds['1_8']['0']">
                 Исход 1 тайма: {{ props.item.odds['1_8']['0'].home_od }} - {{ props.item.odds['1_8']['0'].draw_od }} - {{ props.item.odds['1_8']['0'].away_od }}<br>
@@ -175,6 +179,7 @@
             <td>
               <div v-if="props.item.resultView && props.item.resultView.scores && props.item.resultView.scores['2']" class="bold">
                 {{ props.item.resultView.scores['2'].home }} - {{ props.item.resultView.scores['2'].away }}
+                ({{ props.item.resultView.scores['1'].home }} - {{ props.item.resultView.scores['1'].away }})
               </div>
               <div v-if="props.item.resultView && props.item.resultView.events" >{{ GoalTimes(props.item.resultView.events) }}</div>
             </td>
@@ -279,6 +284,27 @@
       },
       eventsCount() {
         return this.$store.state.events.length
+      },
+      maxSlump() {
+        let result = 0;
+        let currentMax = this.startBank;
+        let maxDifferent = 0
+
+        if (this.chartData.datasets[0].data.length > 0) {
+          _.forEach(this.chartData.datasets[0].data, (dataItem) => {
+            if (dataItem > currentMax) {
+              currentMax = dataItem
+            }
+
+            if (currentMax - dataItem > maxDifferent) {
+              maxDifferent = currentMax - dataItem
+            }
+          })
+        }
+
+        result = maxDifferent/this.startBank * 100
+        return result.toFixed(2)
+
       },
       eventsMinusCount: resultFunctions[resultType + 'Minus'],
       eventsPlusCount: resultFunctions[resultType + 'Plus'],
