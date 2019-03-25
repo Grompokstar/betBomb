@@ -124,22 +124,19 @@ export const state = () => ({
     title: '',
     customer_id: null,
   },
-  currentTicketArticles: []
+  currentTicketArticles: [],
+  bots: {
+    serega_draw: 'draw',
+    oracle: 'away',
+    home: 'home'
+  }
+
 })
 
 export const mutations = {
   setEvents (state, payload) {
     let filterData = payload.data;
-    //filterData = _.filter(filterData, filterFunctions.totalGoals);
-    //filterData = _.filter(filterData, filterFunctions.startResultOdd);
-    //filterData = _.filter(filterData, filterFunctions.attacks);
-    //filterData = _.filter(filterData, filterFunctions.startTB);
-    //filterData = _.filter(filterData, filterFunctions.leagueName);
-    //filterData = _.filter(filterData, filterFunctions.currentWinner);
-
-    //filterData = _.map(filterData, filterFunctions.mapTrendAttacks);
-    //filterData = _.filter(filterData, filterFunctions.currentTB1stHalf);
-    filterData = _.sortBy(filterData, 'time');
+    //filterData = _.sortBy(filterData, 'time');
     state.events = filterData;
   },
 
@@ -301,13 +298,26 @@ export const actions = {
     let count = 1;
 
     for (let key in filter) {
-      if (filter[key]) {
+      if (filter[key] && (typeof filter[key] != 'object')) {
         if (count === 1) {
           filterStr += '?' + key + '=' + filter[key];
         } else {
           filterStr += '&' + key + '=' + filter[key];
         }
         count++;
+      } else if (typeof filter[key] === 'object') {
+        let multiCount = 0
+        _.forEach(filter[key], function(item) {
+          if (count === 1) {
+            filterStr += '?' + key + '[' + multiCount +']=' + item.name;
+          } else {
+            filterStr += '&' + key + '[' + multiCount +']=' + item.name;
+          }
+          multiCount++;
+          count++;
+        })
+
+
       }
     }
     try {

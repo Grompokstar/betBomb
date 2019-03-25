@@ -177,6 +177,9 @@
               </template>
             </td>
             <td>
+              <div v-if="props.item.botType">
+                {{props.item.botType}}
+              </div>
               <div v-if="props.item.resultView && props.item.resultView.scores && props.item.resultView.scores['1']" class="bold">
                 {{ props.item.resultView.scores['2'].home }} - {{ props.item.resultView.scores['2'].away }}
                 ({{ props.item.resultView.scores['1'].home }} - {{ props.item.resultView.scores['1'].away }})
@@ -203,7 +206,6 @@
   import { makeErrorObject, calculatePrice } from '../../libraries/helpers'
   import { resultFunctions } from '../../libraries/result_functions'
   import BetsChart from '~/components/charts/BetsChart'
-  const resultType = 'draw';
 
   export default {
     components: {
@@ -306,14 +308,13 @@
         return result.toFixed(2)
         
       },
-      eventsMinusCount: resultFunctions[resultType + 'Minus'],
-      eventsPlusCount: resultFunctions[resultType + 'Plus'],
-      finalSum: resultFunctions[resultType + 'FinalSum'],
-      //_60MinutePlusCount: resultFunctions._60minutePlusCount
+      eventsMinusCount: resultFunctions['minus'],
+      eventsPlusCount: resultFunctions['plus'],
+      finalSum: resultFunctions['finalSum']
     },
 
     methods: {
-      getResult: resultFunctions[resultType + 'Class'],
+      getResult: resultFunctions['resultClass'],
 
       showSearchInput() {
         this.isShowSearchInput = true
@@ -353,7 +354,11 @@
 
         let filter = {
           date_at: this.dateAt,
-          date_to: this.dateTo
+          date_to: this.dateTo,
+          multi: [
+            {name: 'serega_draw', type: 'draw'},
+            {name: 'oracle', type: 'away'},
+          ]
         }
         this.$store.dispatch('getEvents', filter).then(response => {
           this.isLoadingProducts = false;
