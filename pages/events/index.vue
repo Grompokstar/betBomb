@@ -213,7 +213,7 @@
     },
 
     mounted() {
-      this.$store.dispatch('getEvents').then(response => {
+      this.$store.dispatch('getEvents', {multi: this.multi}).then(response => {
         this.isLoadingProducts = false;
         if (response.status === 200) {
           this.$store.commit('setEvents', response)
@@ -250,8 +250,8 @@
         confirmDeleteProductDialog: false,
         deletingProduct: null,
         haveProcessingProducts: false,
-        startBank: 15000,
-        betSize: 1/30,
+        startBank: 20000,
+        betSize: 1/40,
         chartOptions: {
           responsive: true,
           lineTension: 0,
@@ -269,7 +269,13 @@
         dateAt: '',
         dateTo: '',
         menu: false,
-        menu2: false
+        menu2: false,
+        multi: [
+          {name: 'serega_draw', type: 'draw'},
+          {name: 'oracle', type: 'away'},
+          {name: 'patriot', type: 'home'},
+          {name: 'friendship', type: 'draw'},
+        ]
 
       }
     },
@@ -355,10 +361,7 @@
         let filter = {
           date_at: this.dateAt,
           date_to: this.dateTo,
-          multi: [
-            {name: 'serega_draw', type: 'draw'},
-            {name: 'oracle', type: 'away'},
-          ]
+          multi: this.multi
         }
         this.$store.dispatch('getEvents', filter).then(response => {
           this.isLoadingProducts = false;
