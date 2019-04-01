@@ -250,7 +250,7 @@
         confirmDeleteProductDialog: false,
         deletingProduct: null,
         haveProcessingProducts: false,
-        startBank: 20000,
+        startBank: 28000,
         betSize: 1/40,
         chartOptions: {
           responsive: true,
