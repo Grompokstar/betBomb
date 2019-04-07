@@ -252,7 +252,7 @@
         haveProcessingProducts: false,
         startBank: 30000,
         betSize: 1/30,
-        betSize2: 1/60,
+        betSize2: 1/37.5,
         chartOptions: {
           responsive: true,
           lineTension: 0,
