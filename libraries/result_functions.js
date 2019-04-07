@@ -205,6 +205,7 @@ function goalTimes(events) {
 function finalSum() {
   let sum = this.startBank;
   let stavka = this.startBank * this.betSize;
+  let stavka2 = this.startBank * this.betSize2;
   let count = 0;
   let labels = [];
   let dataset = [];
@@ -229,9 +230,9 @@ function finalSum() {
 
       if (item.botType === 'draw') {
         if (parseInt(item.resultView.scores['2'].home) === parseInt(item.resultView.scores['2'].away)) {
-          sum += (stavka*parseFloat(item.odds.currentResultOdd.draw_od) - stavka)
+          sum += (stavka2*parseFloat(item.odds.currentResultOdd.draw_od) - stavka2)
         } else {
-          sum -= stavka
+          sum -= stavka2
         }
       } else if (item.botType === 'away') {
         if (parseInt(item.resultView.scores['2'].home) < parseInt(item.resultView.scores['2'].away)) {
@@ -241,9 +242,9 @@ function finalSum() {
         }
       } else if (item.botType === 'home') {
         if (parseInt(item.resultView.scores['2'].home) > parseInt(item.resultView.scores['2'].away)) {
-          sum += (stavka*parseFloat(item.odds.currentResultOdd.home_od) - stavka)
+          sum += (stavka2*parseFloat(item.odds.currentResultOdd.home_od) - stavka2)
         } else {
-          sum -= stavka
+          sum -= stavka2
         }
       }
 
