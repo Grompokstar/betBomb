@@ -250,9 +250,9 @@
         confirmDeleteProductDialog: false,
         deletingProduct: null,
         haveProcessingProducts: false,
-        startBank: 30000,
-        betSize: 1/30,
-        betSize2: 1/37.5,
+        startBank: 20000,
+        betSize: 1/40,
+        betSize2: 1/40,
         chartOptions: {
           responsive: true,
           lineTension: 0,
@@ -272,10 +272,11 @@
         menu: false,
         menu2: false,
         multi: [
-          {name: 'serega_draw', type: 'draw'},
+          //{name: 'serega_draw', type: 'draw'},
+          //{name: 'serega_draw_full', type: 'draw'},
           {name: 'oracle', type: 'away'},
-          {name: 'patriot', type: 'home'},
-          {name: 'friendship', type: 'draw'}
+          //{name: 'patriot', type: 'home'},
+          //{name: 'friendship', type: 'draw'}
         ]
 
       }
