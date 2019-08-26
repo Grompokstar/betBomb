@@ -1,6 +1,5 @@
 <template>
   <v-app class="boodet-theme">
-    <de-header></de-header>
     <v-content v-if="showApp">
         <nuxt />
     </v-content>

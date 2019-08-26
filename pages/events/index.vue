@@ -1,8 +1,15 @@
 <template>
   <v-container>
-    <v-layout row class="mmt-2">
-      <v-flex xs1>
-        Фильтры:
+    <v-layout row class="mmt-2 mmb-5 align-center">
+      <v-flex xs4>
+        <v-autocomplete class="mmr-3"
+                        :items="selectBot"
+                        v-model="selectBotValue"
+                        label="Боты"
+                        multiple
+                        hideDetails
+                        autocomplete>
+        </v-autocomplete>
       </v-flex>
       <v-flex xs2 class="mmr-3">
         <v-menu
@@ -22,13 +29,14 @@
                   v-model="dateAt"
                   label="От"
                   prepend-icon="event"
+                  hideDetails
                   readonly
           ></v-text-field>
           <v-date-picker v-model="dateAt" @input="$refs.menu.save(dateAt)"></v-date-picker>
         </v-menu>
       </v-flex>
 
-      <v-flex xs2>
+      <v-flex xs2 class="mmr-3">
         <v-menu
                 ref="menu2"
                 :close-on-content-click="false"
@@ -46,10 +54,17 @@
                   v-model="dateTo"
                   label="До"
                   prepend-icon="event"
+                  hideDetails
                   readonly
           ></v-text-field>
           <v-date-picker v-model="dateTo" @input="$refs.menu2.save(dateTo)"></v-date-picker>
         </v-menu>
+      </v-flex>
+      <v-flex xs1>
+        <div class="boodet-btn mmt-2" @click="clearFilters">Очистить</div>
+      </v-flex xs1>
+      <v-flex>
+        <div class="boodet-btn mmt-2" @click="refreshList">Применить</div>
       </v-flex>
 
     </v-layout>
@@ -104,9 +119,6 @@
         </div>-->
       </v-flex>
       <v-spacer></v-spacer>
-      <v-flex class="text-xs-right">
-        <div class="boodet-btn" @click="refreshList">Обновить</div>
-      </v-flex>
     </v-layout>
     <div class="chart-container mmt-2">
       <bets-chart :chartData="chartData" :options="chartOptions"></bets-chart>
@@ -213,7 +225,7 @@
     },
 
     mounted() {
-      this.$store.dispatch('getEvents', {multi: this.multi}).then(response => {
+      this.$store.dispatch('getEvents', {multi: this.selectBotValue}).then(response => {
         this.isLoadingProducts = false;
         if (response.status === 200) {
           this.$store.commit('setEvents', response)
@@ -250,9 +262,9 @@
         confirmDeleteProductDialog: false,
         deletingProduct: null,
         haveProcessingProducts: false,
-        startBank: 20000,
-        betSize: 1/40,
-        betSize2: 1/40,
+        startBank: 15000,
+        betSize: 1/50,
+        betSize2: 1/50,
         chartOptions: {
           responsive: true,
           lineTension: 0,
@@ -271,11 +283,19 @@
         dateTo: '',
         menu: false,
         menu2: false,
+        selectBotValue: [{name: 'oracle', type: 'away'}],
+        selectBot: [
+          {value: {name: 'serega_draw', type: 'draw'}, text: 'Бот 0-0'},
+          {value: {name: 'serega_draw_full', type: 'draw'}, text: 'Бот 0-0 Full'},
+          {value: {name: 'oracle', type: 'away'}, text: 'Бот Оракул'},
+          {value: {name: 'patriot', type: 'home'}, text: 'Бот Патриот'},
+          {value: {name: 'friendship', type: 'draw'}, text: 'Бот Дружба'},
+        ],
         multi: [
           //{name: 'serega_draw', type: 'draw'},
           //{name: 'serega_draw_full', type: 'draw'},
           {name: 'oracle', type: 'away'},
-          //{name: 'patriot', type: 'home'},
+          {name: 'patriot', type: 'home'},
           //{name: 'friendship', type: 'draw'}
         ]
 
@@ -363,7 +383,7 @@
         let filter = {
           date_at: this.dateAt,
           date_to: this.dateTo,
-          multi: this.multi
+          multi: this.selectBotValue
         }
         this.$store.dispatch('getEvents', filter).then(response => {
           this.isLoadingProducts = false;
@@ -373,6 +393,11 @@
             this.$toast.error(makeErrorObject(response))
           }
         });
+      },
+
+      clearFilters() {
+        this.dateAt = ''
+        this.dateTo = ''
       },
 
       GoalTimes(events) {

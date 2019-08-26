@@ -34,7 +34,7 @@
     "popper.js": "^1.14.3",
     "vue-chartjs": "^3.3.2",
     "vue-i18n": "^8.0.0",
-    "vuetify": "^1.0.0"
+    "vuetify": "^1.1.7"
   },
   "devDependencies": {
     "stylus": "^0.54.5",
