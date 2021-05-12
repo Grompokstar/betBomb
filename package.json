@@ -24,7 +24,7 @@
     "@nuxtjs/sentry": "^1.0.3",
     "axios": "^0.18.0",
     "bootstrap": "^4.1.0",
-    "chart.js": "^2.7.2",
+    "chart.js": "^2.9.4",
     "cookie-universal-nuxt": "^2.0.3",
     "cxlt-vue2-toastr": "^1.1.0",
     "is-browser": "^2.0.1",
